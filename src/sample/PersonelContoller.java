@@ -43,7 +43,26 @@ public class PersonelContoller {
     @FXML
     private ImageView fotograf;
 
-    public void listele(ActionEvent e){
+    public void personelListele() {
+
+    }
+
+    public void personelBilgiGuncelle(ActionEvent e){
+        tcKimlikNo.setText("1000000000");
+        adi.setText("Gürkan");
+        soyadi.setText("Gültekin");
+        maas.setText("2000");
+        departman.setText("Bilişim");
+        this.personelListesi.setItems(FXCollections.observableArrayList("ADASDA","ADASDASD"));
+        formuTemizle_Detay.setText("Formu Temizle");
+
+    }
+
+    public void personelOlustur() {
+
+    }
+
+    public void personelIstenCikar(ActionEvent e){
         tcKimlikNo.setText("1000000000");
         adi.setText("Gurkan");
         soyadi.setText("Gultekin");
@@ -51,6 +70,21 @@ public class PersonelContoller {
         departman.setText("Bilişim");
         this.personelListesi.setItems(FXCollections.observableArrayList("ADASDA","ADASDASD"));
 
+    }
+
+
+
+    public void formuTemizle_Detay(ActionEvent e){
+        if(this.tcKimlikNo.equals("")){
+            formuTemizle_Detay.setText("Formu Temizle");
+        }else{
+            tcKimlikNo.setText("");
+            adi.setText("");
+            soyadi.setText("");
+            maas.setText("");
+            departman.setText("");
+            formuTemizle_Detay.setText("Detay");
+        }
     }
 
     public Personel getPersonel() {
