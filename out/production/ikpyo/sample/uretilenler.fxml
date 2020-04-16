@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SatislarController">
+   <children>
+      <ListView layoutX="30.0" layoutY="50.0" prefHeight="455.0" prefWidth="964.0" />
+      <Label layoutX="30.0" layoutY="592.0" text="Toplam Yapılan Üretim " />
+      <Label layoutX="189.0" layoutY="592.0" text="30" />
+      <Label layoutX="440.0" layoutY="592.0" text="Aylık Üretim Hedefi :" />
+      <Label layoutX="576.0" layoutY="592.0" text="50" />
+   </children>
+</AnchorPane>
