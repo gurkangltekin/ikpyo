@@ -1,18 +1,26 @@
 package sample;
 
 
-import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
-import javax.swing.text.html.ImageView;
+import java.io.IOException;
+import java.net.URL;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.ResourceBundle;
 
-public class PersonelContoller {
+public class PersonelContoller implements Initializable {
     private Personel personel;
     private List<Personel> personelList;
     private DosyaYazma dosyaYazOku;
@@ -33,58 +41,106 @@ public class PersonelContoller {
     @FXML
     private ListView<String> istenCikisSaatleri;
     @FXML
-    private ListView<String> personelListesi = new ListView<String>();
+    private ListView<String> personelListesi;
     @FXML
     private Button kisiyiGuncelle_yeniKisiEkle;
     @FXML
     private Button istenCikar;
     @FXML
-    private Button formuTemizle_Detay;
+    private Button formuTemizle;
+    @FXML
+    private Button detay;
+    @FXML
+    private Button geri;
     @FXML
     private ImageView fotograf;
+    @FXML
+    private AnchorPane anchorPane;
 
-    public void personelListele() {
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        this.personelListesi.getItems().add("Gürkan Gültekin");
+        this.personelListesi.getItems().add("Suzan Nur Bülbül");
+        this.personelListesi.getItems().add("Ahmet Uysal");
+        this.iseGirisTarihi.setValue(LocalDate.now());
+        this.fotograf.setImage(new Image("/sample/unnamed.jpg"));
     }
 
-    public void personelBilgiGuncelle(ActionEvent e){
-        tcKimlikNo.setText("1000000000");
-        adi.setText("Gürkan");
-        soyadi.setText("Gültekin");
-        maas.setText("2000");
-        departman.setText("Bilişim");
-        this.personelListesi.setItems(FXCollections.observableArrayList("ADASDA","ADASDASD"));
-        formuTemizle_Detay.setText("Formu Temizle");
+    public void geri(ActionEvent e) throws IOException {
+        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("anasayfa.fxml"));
+        this.anchorPane.getChildren().setAll(pane);
+    }
 
+    public void personelListele(ActionEvent e) {
+    }
+
+    public void personelBilgiGuncelleEkle(ActionEvent e){
+        if(this.getKisiyiGuncelle_yeniKisiEkle().getText().equals("Yeni Personel Ekle")){
+            this.personelOlustur();
+        }else{
+            //persoenl bilgi guncelleme islemleri
+        }
     }
 
     public void personelOlustur() {
-
+        this.personelListesi.getItems().add(this.getAdi().getText() + " " + this.getSoyadi().getText());
+        this.formTemizle();
     }
 
     public void personelIstenCikar(ActionEvent e){
-        tcKimlikNo.setText("1000000000");
-        adi.setText("Gurkan");
-        soyadi.setText("Gultekin");
-        maas.setText("2000");
-        departman.setText("Bilişim");
-        this.personelListesi.setItems(FXCollections.observableArrayList("ADASDA","ADASDASD"));
-
+        this.personelListesi.getItems().removeAll(this.getAdi().getText() + " " + this.getSoyadi().getText());
+        this.formTemizle();
     }
 
-
-
-    public void formuTemizle_Detay(ActionEvent e){
-        if(this.tcKimlikNo.equals("")){
-            formuTemizle_Detay.setText("Formu Temizle");
-        }else{
-            tcKimlikNo.setText("");
-            adi.setText("");
-            soyadi.setText("");
-            maas.setText("");
-            departman.setText("");
-            formuTemizle_Detay.setText("Detay");
+    public void detay(ActionEvent e){
+        ObservableList<String> selected;
+        selected = personelListesi.getSelectionModel().getSelectedItems();
+        for(String name : selected){
+            if(name.equals("Gürkan Gültekin")){
+                this.getTcKimlikNo().setText("10000000000");
+                this.getAdi().setText("Gürkan");
+                this.getSoyadi().setText("Gültekin");
+                this.getDepartman().setText("İşçi");
+                this.getMaas().setText("2000");
+            } else if(name.equals("Suzan Nur Bülbül")){
+                this.getTcKimlikNo().setText("10000000002");
+                this.getAdi().setText("Suzan Nur");
+                this.getSoyadi().setText("Bülbül");
+                LocalDate ld = LocalDate.parse("2015-05-11");
+                this.getIseGirisTarihi().setValue(ld);
+                this.getDepartman().setText("Bilişim");
+                this.getMaas().setText("3000");
+                this.getFotograf().setImage(new Image("/sample/image.jpg"));
+            } else if (name.equals("Ahmet Uysal")){
+                this.getTcKimlikNo().setText("10000000004");
+                this.getAdi().setText("Ahmet");
+                this.getSoyadi().setText("Uysal");
+                this.getDepartman().setText("Müdür");
+                this.getMaas().setText("4000");
+            }else{
+                this.getTcKimlikNo().setText("Bilgi Yok!");
+                this.getAdi().setText("Bilgi Yok!");
+                this.getSoyadi().setText("Bilgi Yok!");
+                this.getDepartman().setText("Bilgi Yok!");
+                this.getMaas().setText("Bilgi Yok!");
+            }
         }
+        this.getKisiyiGuncelle_yeniKisiEkle().setText("Personel Güncelle");
+    }
+
+    public void formuTemizle(ActionEvent e){
+        this.formTemizle();
+    }
+    public void formTemizle(){
+        tcKimlikNo.setText("");
+        adi.setText("");
+        soyadi.setText("");
+        maas.setText("");
+        departman.setText("");
+        iseGirisTarihi.setValue(LocalDate.now());
+        this.fotograf.setImage(new Image("/sample/unnamed.jpg"));
+        this.getKisiyiGuncelle_yeniKisiEkle().setText("Yeni Personel Ekle");
     }
 
     public Personel getPersonel() {
@@ -199,12 +255,12 @@ public class PersonelContoller {
         this.istenCikar = istenCikar;
     }
 
-    public Button getFormuTemizle_Detay() {
-        return formuTemizle_Detay;
+    public Button getFormuTemizle() {
+        return formuTemizle;
     }
 
-    public void setFormuTemizle_Detay(Button formuTemizle_Detay) {
-        this.formuTemizle_Detay = formuTemizle_Detay;
+    public void setFormuTemizle(Button formuTemizle) {
+        this.formuTemizle = formuTemizle;
     }
 
     public ImageView getFotograf() {
@@ -213,5 +269,13 @@ public class PersonelContoller {
 
     public void setFotograf(ImageView fotograf) {
         this.fotograf = fotograf;
+    }
+
+    public Button getDetay() {
+        return detay;
+    }
+
+    public void setDetay(Button detay) {
+        this.detay = detay;
     }
 }
