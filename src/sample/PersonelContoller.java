@@ -103,6 +103,7 @@ public class PersonelContoller implements Initializable {
                 this.getSoyadi().setText("Gültekin");
                 this.getDepartman().setText("İşçi");
                 this.getMaas().setText("2000");
+                this.getFotograf().setImage(new Image("/sample/unnamed.jpg"));
             } else if(name.equals("Suzan Nur Bülbül")){
                 this.getTcKimlikNo().setText("10000000002");
                 this.getAdi().setText("Suzan Nur");
@@ -118,6 +119,7 @@ public class PersonelContoller implements Initializable {
                 this.getSoyadi().setText("Uysal");
                 this.getDepartman().setText("Müdür");
                 this.getMaas().setText("4000");
+                this.getFotograf().setImage(new Image("/sample/unnamed.jpg"));
             }else{
                 this.getTcKimlikNo().setText("Bilgi Yok!");
                 this.getAdi().setText("Bilgi Yok!");
