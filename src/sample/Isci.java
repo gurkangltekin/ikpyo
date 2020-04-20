@@ -1,6 +1,11 @@
 package sample;
 
+import javafx.scene.image.Image;
+
+import java.net.URL;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class Isci extends Personel{
     private List<Integer> gunlukUretim;

@@ -28,12 +28,12 @@ public class Controller {
     }
     public void isciler(ActionEvent e) throws IOException {
         this.getMain().setTitle("İşçi");
-        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("isci.fxml"));
+        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("Isci.fxml"));
         anchorPane.getChildren().setAll(pane);
     }
     public void pazarlamacilar(ActionEvent e) throws IOException {
         this.getMain().setTitle("Pazarlamacı");
-        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("pazarlamaci.fxml"));
+        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("Pazarlamaci.fxml"));
         anchorPane.getChildren().setAll(pane);
     }
     public void itElemani(ActionEvent e) throws IOException {
@@ -43,12 +43,12 @@ public class Controller {
     }
     public void muhasebeci(ActionEvent e) throws IOException {
         this.getMain().setTitle("Muhasebeci");
-        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("muhasebeci.fxml"));
+        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("Muhasebeci.fxml"));
         anchorPane.getChildren().setAll(pane);
     }
     public void muhendis(ActionEvent e) throws IOException {
         this.getMain().setTitle("Mühendis");
-        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("muhendis.fxml"));
+        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("Muhendis.fxml"));
         anchorPane.getChildren().setAll(pane);
     }
     public void satislar(ActionEvent e) throws IOException {
@@ -68,7 +68,7 @@ public class Controller {
     }
     public void teknikEleman(ActionEvent e) throws IOException {
         this.getMain().setTitle("Teknik Eleman");
-        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("teknikEleman.fxml"));
+        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("TeknikEleman.fxml"));
         anchorPane.getChildren().setAll(pane);
     }
 
