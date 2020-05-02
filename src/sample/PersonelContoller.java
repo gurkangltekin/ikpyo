@@ -57,6 +57,9 @@ public class PersonelContoller implements Initializable {
 
     private Main main = new Main();
 
+
+
+
     public void personel(){
         this.getPersonelList().add(new Personel());
         this.getPersonelList().add(new Personel());
@@ -292,5 +295,29 @@ public class PersonelContoller implements Initializable {
 
     public void setFotograf(ImageView fotograf) {
         this.fotograf = fotograf;
+    }
+
+    public Button getGeri() {
+        return geri;
+    }
+
+    public void setGeri(Button geri) {
+        this.geri = geri;
+    }
+
+    public AnchorPane getAnchorPane() {
+        return anchorPane;
+    }
+
+    public void setAnchorPane(AnchorPane anchorPane) {
+        this.anchorPane = anchorPane;
+    }
+
+    public Main getMain() {
+        return main;
+    }
+
+    public void setMain(Main main) {
+        this.main = main;
     }
 }

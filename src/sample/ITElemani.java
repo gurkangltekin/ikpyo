@@ -1,13 +1,9 @@
 package sample;
 
-public class ITElemani extends TeknikEleman {
+public class ITElemani  {
 
     private String uzmalik;
 
-    public ITElemani(int tecrube, String alan, String uzmalik) {
-        super(tecrube, alan);
-        this.uzmalik = uzmalik;
-    }
 
     public String getUzmalik() {
         return uzmalik;
