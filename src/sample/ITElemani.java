@@ -1,6 +1,6 @@
 package sample;
 
-public class ITElemani  {
+public class ITElemani  extends Personel{
 
     private String uzmalik;
 

@@ -57,7 +57,13 @@ public class PersonelContoller implements Initializable {
 
     private Main main = new Main();
 
-
+    private Personel isci;
+    private Personel ITElemani;
+    private Personel muhasebeci;
+    private Personel muhendis;
+    private Personel pazarlamaci;
+    private Personel teknikEleman;
+    private Personel teknisyen;
 
 
     public void personel(){
@@ -319,5 +325,75 @@ public class PersonelContoller implements Initializable {
 
     public void setMain(Main main) {
         this.main = main;
+    }
+
+    public Personel getIsci() {
+        if(this.isci == null)
+            this.isci = new Isci();
+        return isci;
+    }
+
+    public void setIsci(Personel isci) {
+        this.isci = isci;
+    }
+
+    public Personel getITElemani() {
+        if(this.ITElemani == null)
+            this.ITElemani = new ITElemani();
+        return ITElemani;
+    }
+
+    public void setITElemani(Personel ITElemani) {
+        this.ITElemani = ITElemani;
+    }
+
+    public Personel getMuhasebeci() {
+        if(this.muhasebeci == null)
+            this.muhasebeci = new Muhasebeci();
+        return muhasebeci;
+    }
+
+    public void setMuhasebeci(Personel muhasebeci) {
+        this.muhasebeci = muhasebeci;
+    }
+
+    public Personel getMuhendis() {
+        if(this.muhendis == null)
+            this.muhendis = new Muhendis();
+        return muhendis;
+    }
+
+    public void setMuhendis(Personel muhendis) {
+        this.muhendis = muhendis;
+    }
+
+    public Personel getPazarlamaci() {
+        if(this.pazarlamaci == null)
+            this.pazarlamaci = new Pazarlamaci(0,0);
+        return pazarlamaci;
+    }
+
+    public void setPazarlamaci(Personel pazarlamaci) {
+        this.pazarlamaci = pazarlamaci;
+    }
+
+    public Personel getTeknikEleman() {
+        if(this.teknikEleman == null)
+            this.teknikEleman = new TeknikEleman();
+        return teknikEleman;
+    }
+
+    public void setTeknikEleman(Personel teknikEleman) {
+        this.teknikEleman = teknikEleman;
+    }
+
+    public Personel getTeknisyen() {
+        if(this.teknisyen == null)
+            this.teknisyen = new Teknisyen();
+        return teknisyen;
+    }
+
+    public void setTeknisyen(Personel teknisyen) {
+        this.teknisyen = teknisyen;
     }
 }

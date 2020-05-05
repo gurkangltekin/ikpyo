@@ -3,9 +3,7 @@ package sample;
 public class Muhendis extends TeknikEleman {
     private String uzmanlik;
 
-    public Muhendis(int tecrube, String alan, String uzmanlik) {
-        super(tecrube, alan);
-        this.uzmanlik = uzmanlik;
+    public Muhendis() {
     }
 
     public String getUzmanlik() {

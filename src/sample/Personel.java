@@ -13,6 +13,7 @@ public class Personel {
     private int maas;
     private List<Timestamp> girisSaati;
     private List<Timestamp> cikisSaati;
+    private String fotografUrl;
 
     public void maasGuncelle(int maas){
         this.setMaas(maas);
@@ -104,5 +105,13 @@ public class Personel {
 
     public void setCikisSaati(List<Timestamp> cikisSaati) {
         this.cikisSaati = cikisSaati;
+    }
+
+    public String getFotografUrl() {
+        return fotografUrl;
+    }
+
+    public void setFotografUrl(String fotografUrl) {
+        this.fotografUrl = fotografUrl;
     }
 }

@@ -7,6 +7,11 @@ public class Pazarlamaci extends Personel {
     private int aylikHedef;
     private int toplamSatis;
 
+    public Pazarlamaci(int aylikHedef, int toplamSatis) {
+        this.aylikHedef = aylikHedef;
+        this.toplamSatis = toplamSatis;
+    }
+
     public void gunlukSatisGuncelle(){
 
     }

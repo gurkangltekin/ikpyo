@@ -4,9 +4,7 @@ public class TeknikEleman extends Personel {
     private int tecrube;
     private String Alan;
 
-    public TeknikEleman(int tecrube, String alan) {
-        this.tecrube = tecrube;
-        Alan = alan;
+    public TeknikEleman() {
     }
 
     public int getTecrube() {
