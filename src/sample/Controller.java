@@ -26,12 +26,12 @@ public class Controller {
     }
     public void isciler(ActionEvent e) throws IOException {
         this.getMain().setTitle("İşçi");
-        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("Isci.fxml"));
+        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("isci.fxml"));
         anchorPane.getChildren().setAll(pane);
     }
     public void pazarlamacilar(ActionEvent e) throws IOException {
         this.getMain().setTitle("Pazarlamacı");
-        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("Pazarlamaci.fxml"));
+        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("pazarlamaci.fxml"));
         anchorPane.getChildren().setAll(pane);
     }
     public void itElemani(ActionEvent e) throws IOException {

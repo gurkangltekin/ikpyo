@@ -1,12 +1,17 @@
 package sample;
 
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
 public class SatislarController {
+	@FXML
 private ListView personelListele;
+	@FXML
 private Label toplamSatis;
+	@FXML
 private Label aylikHedef;
+	@FXML
 private DosyaYazma dosyaYazOku;
 public ListView getPersonelListele() {
 	return personelListele;

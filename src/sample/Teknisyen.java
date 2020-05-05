@@ -3,8 +3,6 @@ package sample;
 public class Teknisyen extends TeknikEleman {
     private String departman;
 
-    public Teknisyen() {
-    }
 
 
     public String getDepartman() {

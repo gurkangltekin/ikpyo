@@ -142,6 +142,24 @@ public class PersonelContoller implements Initializable {
         }
     }
 
+    public void personelOlustur(Pazarlamaci p){
+        this.getPersonelList().add(p);
+        this.getPersonelListesi().getItems().add(this.getPersonelList().get((this.getPersonelList().size()-1)).getAdi() + " " + this.getPersonelList().get((this.getPersonelList().size()-1)).getSoyadi());
+        this.formTemizle();
+    }
+
+    public void personelOlustur(Isci i){
+        this.getPersonelList().add(i);
+        this.getPersonelListesi().getItems().add(this.getPersonelList().get((this.getPersonelList().size()-1)).getAdi() + " " + this.getPersonelList().get((this.getPersonelList().size()-1)).getSoyadi());
+        this.formTemizle();
+    }
+
+    public void personelOlustur(Muhasebeci i) {
+        this.getPersonelList().add(i);
+        this.getPersonelListesi().getItems().add(this.getPersonelList().get((this.getPersonelList().size()-1)).getAdi() + " " + this.getPersonelList().get((this.getPersonelList().size()-1)).getSoyadi());
+        this.formTemizle();
+    }
+
     public void personelOlustur() {
         this.getPersonelList().add(new Personel());
         this.getPersonelList().get((this.getPersonelList().size()-1)).setAdi(this.getAdi().getText());
@@ -329,7 +347,7 @@ public class PersonelContoller implements Initializable {
 
     public Personel getIsci() {
         if(this.isci == null)
-            this.isci = new Isci();
+            this.isci = new Isci(150,100);
         return isci;
     }
 

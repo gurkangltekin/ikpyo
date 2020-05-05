@@ -49,7 +49,7 @@ public class PazarlamaciController extends PersonelContoller {
         this.getPersonelList().get(1).setTCKimlik(487126L);
         this.getPersonelList().get(1).setDepartman("Pazarlama");
         this.getPersonelList().get(1).setMaas(3000);
-        this.getPersonelList().get(1).setFotografUrl("/sample/usmanaga.png");
+        this.getPersonelList().get(1).setFotografUrl("/sample/unnamed.jpg");
         this.getPersonelList().get(2).setAdi("Ahmet");
         this.getPersonelList().get(2).setSoyadi("Uysal");
         this.getPersonelList().get(2).setTCKimlik(487128L);
@@ -96,20 +96,21 @@ public class PazarlamaciController extends PersonelContoller {
     @Override
     public void personelBilgiGuncelleEkle(ActionEvent e){
         if(this.getKisiyiGuncelle_yeniKisiEkle().getText().equals("Yeni Personel Ekle")){
-            this.personelOlustur();
+            Pazarlamaci p = new Pazarlamaci(Integer.parseInt(this.getAylikHedef().getText()), Integer.parseInt(this.getToplamSatis().getText()));
+            p.setAdi(this.getAdi().getText());
+            p.setSoyadi(this.getAdi().getText());
+            p.setTCKimlik(Long.valueOf(this.getTcKimlikNo().getText()));
+            p.setMaas(Integer.parseInt(this.getMaas().getText()));
+            p.setDepartman(this.getDepartman().getText());
+            p.setFotografUrl("/sample/unnamed.jpg");
+            this.personelOlustur(p);
         }else{
             //persoenl bilgi guncelleme islemleri
         }
     }
 
     @Override
-    public void personelOlustur() {
-        Pazarlamaci p = new Pazarlamaci(Integer.parseInt(this.getAylikHedef().getText()), Integer.parseInt(this.getToplamSatis().getText()));
-        p.setAdi(this.getAdi().getText());
-        p.setSoyadi(this.getAdi().getText());
-        p.setTCKimlik(Long.valueOf(this.getTcKimlikNo().getText()));
-        p.setMaas(Integer.parseInt(this.getMaas().getText()));
-        p.setDepartman(this.getDepartman().getText());
+    public void personelOlustur(Pazarlamaci p) {
         this.getPersonelList().add(p);
         this.getPersonelListesi().getItems().add(this.getPersonelList().get((this.getPersonelList().size()-1)).getAdi() + " " + this.getPersonelList().get((this.getPersonelList().size()-1)).getSoyadi());
         this.formTemizle();

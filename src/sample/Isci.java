@@ -7,6 +7,11 @@ public class Isci extends Personel{
     private int aylikHedef;
     private int ToplamUretim;
 
+    public Isci(int aylikHedef, int ToplamUretim){
+        this.aylikHedef = aylikHedef;
+        this.ToplamUretim = ToplamUretim;
+    }
+
     public List<Integer> getGunlukUretim() {
         return gunlukUretim;
     }

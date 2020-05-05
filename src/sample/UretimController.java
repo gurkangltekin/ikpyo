@@ -1,13 +1,17 @@
 package sample;
 
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
 public class UretimController {
-
+	@FXML
 	private ListView personelListele;
+	@FXML
 	private Label toplamUretim;
+	@FXML
 	private Label aylikHedef;
+	@FXML
 	private DosyaYazma dosyaOkuYaz;
 	
 	
