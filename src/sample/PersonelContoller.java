@@ -1,22 +1,25 @@
 package sample;
 
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -54,6 +57,18 @@ public class PersonelContoller implements Initializable {
     private ImageView fotograf;
     @FXML
     private AnchorPane anchorPane;
+    @FXML
+    private TableView personelTable;
+    @FXML
+    private TableColumn<Personel, Long> tableTC;
+    @FXML
+    private TableColumn<Personel, String> tableAdi;
+    @FXML
+    private TableColumn<Personel, String> tableSoyadi;
+    @FXML
+    private TableColumn<Personel, String> tableDepartmani;
+    @FXML
+    private TableColumn<Personel, Date> tableIsegiris;
 
     private Main main = new Main();
 
@@ -65,26 +80,79 @@ public class PersonelContoller implements Initializable {
     private Personel teknikEleman;
     private Personel teknisyen;
 
+    private ObservableList<Personel> list = FXCollections.observableArrayList();
 
-    public void personel(){
-        this.getPersonelList().add(new Personel());
-        this.getPersonelList().add(new Personel());
-        this.getPersonelList().add(new Personel());
-        this.getPersonelList().get(0).setAdi("Gürkan");
-        this.getPersonelList().get(0).setSoyadi("Gültekin");
-        this.getPersonelList().get(1).setAdi("Suzan Nur");
-        this.getPersonelList().get(1).setSoyadi("Bülbül");
-        this.getPersonelList().get(2).setAdi("Ahmet");
-        this.getPersonelList().get(2).setSoyadi("Uysal");
+    public void personel() {
+        this.getPersonelTable().getItems().clear();
+        this.getList().clear();
+        try {
+            List<String> lines = this.getDosyaYazOku().dosyadanOku("personel");
+            int size = lines.size();
+            for (int i = 0; i < size; i++) {
+                String str = lines.get(i);
+                int strsize = str.length();
+                for (int j = 0; j < strsize; j++) {
+                    String ad = "";
+                    String soyad = "";
+                    String tckimlik = "";
+                    String maass = "";
+                    String depart = "";
+                    String isegiris = "";
+                    if (str.charAt(j++) == '!') {
+                        while (str.charAt(j) != '@') {
+                            ad += str.charAt(j++);
+                        }
+                    }
+                    if (str.charAt(j++) == '@') {
+                        while (str.charAt(j) != '%') {
+                            soyad += str.charAt(j++);
+                        }
+                    }
+                    if (str.charAt(j++) == '%') {
+                        while (str.charAt(j) != '&') {
+                            tckimlik += str.charAt(j++);
+                        }
+                    }
+                    if (str.charAt(j++) == '&') {
+                        while (str.charAt(j) != '?') {
+                            maass += str.charAt(j++);
+                        }
+                    }
+                    if (str.charAt(j++) == '?') {
+                        while (str.charAt(j) != '*') {
+                            depart += str.charAt(j++);
+                        }
+                    }
+                    if (str.charAt(j++) == '*') {
+                        while (str.charAt(j) != '_') {
+                            isegiris += str.charAt(j++);
+                        }
+                    }
+                    Personel p = new Personel();
+                    p.setAdi(ad);
+                    p.setSoyadi(soyad);
+                    p.setDepartman(depart);
+                    p.setMaas(Integer.parseInt(maass));
+                    p.setTCKimlik(Long.valueOf(tckimlik));
+                    p.setIseGiris(LocalDate.parse(isegiris));
+                    this.getPersonelList().add(p);
+                    list.add(p);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.getPersonelTable().setItems(this.getList());
+        this.getTableTC().setCellValueFactory(new PropertyValueFactory<Personel, Long>("TCKimlik"));
+        this.getTableAdi().setCellValueFactory(new PropertyValueFactory<Personel, String>("adi"));
+        this.getTableSoyadi().setCellValueFactory(new PropertyValueFactory<Personel, String>("soyadi"));
+        this.getTableDepartmani().setCellValueFactory(new PropertyValueFactory<Personel, String>("departman"));
+        this.getTableIsegiris().setCellValueFactory(new PropertyValueFactory<Personel, Date>("iseGiris"));
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.personel();
-        int size = this.getPersonelList().size();
-        for(int i = 0 ; i < size ; i++){
-            this.personelListesi.getItems().add(this.getPersonelList().get(i).getAdi() + " " + this.getPersonelList().get(i).getSoyadi());
-        }
         this.iseGirisTarihi.setValue(LocalDate.now());
         this.fotograf.setImage(new Image("/sample/unnamed.jpg"));
         this.formuTemizle.setVisible(false);
@@ -98,86 +166,134 @@ public class PersonelContoller implements Initializable {
     }
 
     public void personelDetay(MouseEvent e) {
-        if(personelListesi.getSelectionModel().getSelectedItem().equals("Gürkan Gültekin")){
-            this.getTcKimlikNo().setText("10000000000");
-            this.getAdi().setText("Gürkan");
-            this.getSoyadi().setText("Gültekin");
-            this.getDepartman().setText("Yazılımcı");
-            this.getMaas().setText("2000");
-            this.getFotograf().setImage(new Image("/sample/agent47.png"));
-        } else if(personelListesi.getSelectionModel().getSelectedItem().equals("Suzan Nur Bülbül")){
-            this.getTcKimlikNo().setText("10000000002");
-            this.getAdi().setText("Suzan Nur");
-            this.getSoyadi().setText("Bülbül");
-            LocalDate ld = LocalDate.parse("2015-05-11");
-            this.getIseGirisTarihi().setValue(ld);
-            this.getDepartman().setText("Bilişim");
-            this.getMaas().setText("3000");
-            this.getFotograf().setImage(new Image("/sample/usmanaga.png"));
-        } else if (personelListesi.getSelectionModel().getSelectedItem().equals("Ahmet Uysal")){
-            this.getTcKimlikNo().setText("10000000004");
-            this.getAdi().setText("Ahmet");
-            this.getSoyadi().setText("Uysal");
-            this.getDepartman().setText("Müdür");
-            this.getMaas().setText("4000");
-            this.getFotograf().setImage(new Image("/sample/unnamed.jpg"));
-        }else{
-            this.getTcKimlikNo().setText("Bilgi Yok!");
-            this.getAdi().setText("Bilgi Yok!");
-            this.getSoyadi().setText("Bilgi Yok!");
-            this.getDepartman().setText("Bilgi Yok!");
-            this.getMaas().setText("Bilgi Yok!");
+        int size = this.getPersonelList().size();
+        TableView.TableViewSelectionModel<Personel> selectionModel = personelTable.getSelectionModel();
+        selectionModel.setSelectionMode(SelectionMode.SINGLE);
+        Personel pe = (Personel) selectionModel.getSelectedItem();
+        for (int i = 0; i < size; i++) {
+            if (pe.getTCKimlik().equals(this.getPersonelList().get(i).getTCKimlik())) {
+                Personel p = this.getPersonelList().get(i);
+                this.getTcKimlikNo().setText(p.getTCKimlik().toString());
+                this.getAdi().setText(p.getAdi());
+                this.getSoyadi().setText(p.getSoyadi());
+                this.getDepartman().setText(p.getDepartman());
+                this.getMaas().setText(String.valueOf(p.getMaas()));
+                this.getIseGirisTarihi().setValue(p.getIseGiris());
+                //this.getFotograf().setImage(new Image(pazarlamaci.getFotografUrl()));
+            }
         }
-        this.formuTemizle.setVisible(true);
-        this.istenCikar.setVisible(true);
+        this.getFormuTemizle().setVisible(true);
+        this.getIstenCikar().setVisible(true);
         this.getKisiyiGuncelle_yeniKisiEkle().setText("Personel Güncelle");
 
     }
 
-    public void personelBilgiGuncelleEkle(ActionEvent e){
-        if(this.getKisiyiGuncelle_yeniKisiEkle().getText().equals("Yeni Personel Ekle")){
+    public void personelBilgiGuncelleEkle(ActionEvent e) {
+        if (this.getKisiyiGuncelle_yeniKisiEkle().getText().equals("Yeni Personel Ekle")) {
             this.personelOlustur();
-        }else{
+        } else {
             //persoenl bilgi guncelleme islemleri
+            String string = "!" + this.getAdi().getText() + "@" + this.getSoyadi().getText() + "%" + this.getTcKimlikNo().getText() + "&" + this.getMaas().getText() + "?" + this.getDepartman().getText() + "*" + this.getIseGirisTarihi().getValue() + "_";
+            boolean check = false;
+            try {
+                List<String> lines = this.getDosyaYazOku().dosyadanOku("personel");
+                int size = lines.size();
+                for (int i = 0; i < size; i++) {
+                    String str = lines.get(i);
+                    int strsize = str.length();
+                    for (int j = 0; j < strsize; j++) {
+                        String tckimlik = "";
+                        if (str.charAt(j) == '%') {
+                            j++;
+                            while (str.charAt(j) != '&') {
+                                tckimlik += str.charAt(j++);
+                            }
+                        }
+                        if (tckimlik.equals(this.getTcKimlikNo().getText())) {
+                            lines.remove(i);
+                            check = true;
+                            lines.add(string);
+                            this.getDosyaYazOku().dosyaGuncelle("personel", lines);
+                        }
+                    }
+
+                }
+                if (!check) {
+                    this.personelOlustur();
+                }
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+            this.personel();
+            this.formTemizle();
         }
     }
 
-    public void personelOlustur(Pazarlamaci p){
+    public void personelOlustur(Pazarlamaci p) {
         this.getPersonelList().add(p);
-        this.getPersonelListesi().getItems().add(this.getPersonelList().get((this.getPersonelList().size()-1)).getAdi() + " " + this.getPersonelList().get((this.getPersonelList().size()-1)).getSoyadi());
+        this.getPersonelListesi().getItems().add(this.getPersonelList().get((this.getPersonelList().size() - 1)).getAdi() + " " + this.getPersonelList().get((this.getPersonelList().size() - 1)).getSoyadi());
         this.formTemizle();
     }
 
-    public void personelOlustur(Isci i){
+    public void personelOlustur(Isci i) {
         this.getPersonelList().add(i);
-        this.getPersonelListesi().getItems().add(this.getPersonelList().get((this.getPersonelList().size()-1)).getAdi() + " " + this.getPersonelList().get((this.getPersonelList().size()-1)).getSoyadi());
+        this.getPersonelListesi().getItems().add(this.getPersonelList().get((this.getPersonelList().size() - 1)).getAdi() + " " + this.getPersonelList().get((this.getPersonelList().size() - 1)).getSoyadi());
         this.formTemizle();
     }
 
     public void personelOlustur(Muhasebeci i) {
         this.getPersonelList().add(i);
-        this.getPersonelListesi().getItems().add(this.getPersonelList().get((this.getPersonelList().size()-1)).getAdi() + " " + this.getPersonelList().get((this.getPersonelList().size()-1)).getSoyadi());
+        this.getPersonelListesi().getItems().add(this.getPersonelList().get((this.getPersonelList().size() - 1)).getAdi() + " " + this.getPersonelList().get((this.getPersonelList().size() - 1)).getSoyadi());
         this.formTemizle();
     }
 
     public void personelOlustur() {
-        this.getPersonelList().add(new Personel());
-        this.getPersonelList().get((this.getPersonelList().size()-1)).setAdi(this.getAdi().getText());
-        this.getPersonelList().get((this.getPersonelList().size()-1)).setSoyadi(this.getSoyadi().getText());
-        this.personelListesi.getItems().add(this.getPersonelList().get((this.getPersonelList().size()-1)).getAdi() + " " + this.getPersonelList().get((this.getPersonelList().size()-1)).getSoyadi());
+        String str = "!" + this.getAdi().getText() + "@" + this.getSoyadi().getText() + "%" + this.getTcKimlikNo().getText() + "&" + this.getMaas().getText() + "?" + this.getDepartman().getText() + "*" + this.getIseGirisTarihi().getValue() + "_";
+        this.getDosyaYazOku().setYazilacakDeger(str);
+        try {
+            this.getDosyaYazOku().dosyayaYaz("personel");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.personel();
         this.formTemizle();
     }
 
-    public void personelIstenCikar(ActionEvent e){
-        this.personelListesi.getItems().removeAll(this.getAdi().getText() + " " + this.getSoyadi().getText());
+    public void personelIstenCikar(ActionEvent e) {
+        try {
+            List<String> lines = this.getDosyaYazOku().dosyadanOku("personel");
+            int size = lines.size();
+            boolean check = false;
+            for (int i = 0; i < size; i++) {
+                String str = lines.get(i);
+                int strsize = str.length();
+                for (int j = 0; j < strsize; j++) {
+                    String tckimlik = "";
+                    if (str.charAt(j) == '%') {
+                        j++;
+                        while (str.charAt(j) != '&') {
+                            tckimlik += str.charAt(j++);
+                        }
+                    }
+                    if (tckimlik.equals(this.getTcKimlikNo().getText())) {
+                        lines.remove(i);
+                        this.getDosyaYazOku().dosyaGuncelle("personel", lines);
+                        i = size;
+                    }
+                }
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        this.personel();
         this.formTemizle();
     }
 
-    public void formuTemizle(ActionEvent e){
+    public void formuTemizle(ActionEvent e) {
         this.formTemizle();
     }
 
-    public void formTemizle(){
+    public void formTemizle() {
         tcKimlikNo.setText("");
         adi.setText("");
         soyadi.setText("");
@@ -188,7 +304,7 @@ public class PersonelContoller implements Initializable {
         this.getKisiyiGuncelle_yeniKisiEkle().setText("Yeni Personel Ekle");
         this.formuTemizle.setVisible(false);
         this.istenCikar.setVisible(false);
-        this.personelListesi.getSelectionModel().clearSelection();
+        this.personelTable.getSelectionModel().clearSelection();
     }
 
     public Personel getPersonel() {
@@ -200,7 +316,7 @@ public class PersonelContoller implements Initializable {
     }
 
     public List<Personel> getPersonelList() {
-        if(this.personelList == null)
+        if (this.personelList == null)
             this.personelList = new ArrayList<>();
         return personelList;
     }
@@ -210,6 +326,8 @@ public class PersonelContoller implements Initializable {
     }
 
     public DosyaYazma getDosyaYazOku() {
+        if (this.dosyaYazOku == null)
+            this.dosyaYazOku = new DosyaYazma();
         return dosyaYazOku;
     }
 
@@ -346,8 +464,8 @@ public class PersonelContoller implements Initializable {
     }
 
     public Personel getIsci() {
-        if(this.isci == null)
-            this.isci = new Isci(150,100);
+        if (this.isci == null)
+            this.isci = new Isci(150, 100);
         return isci;
     }
 
@@ -356,7 +474,7 @@ public class PersonelContoller implements Initializable {
     }
 
     public Personel getITElemani() {
-        if(this.ITElemani == null)
+        if (this.ITElemani == null)
             this.ITElemani = new ITElemani();
         return ITElemani;
     }
@@ -366,7 +484,7 @@ public class PersonelContoller implements Initializable {
     }
 
     public Personel getMuhasebeci() {
-        if(this.muhasebeci == null)
+        if (this.muhasebeci == null)
             this.muhasebeci = new Muhasebeci();
         return muhasebeci;
     }
@@ -376,7 +494,7 @@ public class PersonelContoller implements Initializable {
     }
 
     public Personel getMuhendis() {
-        if(this.muhendis == null)
+        if (this.muhendis == null)
             this.muhendis = new Muhendis();
         return muhendis;
     }
@@ -386,8 +504,8 @@ public class PersonelContoller implements Initializable {
     }
 
     public Personel getPazarlamaci() {
-        if(this.pazarlamaci == null)
-            this.pazarlamaci = new Pazarlamaci(0,0);
+        if (this.pazarlamaci == null)
+            this.pazarlamaci = new Pazarlamaci(0, 0);
         return pazarlamaci;
     }
 
@@ -396,7 +514,7 @@ public class PersonelContoller implements Initializable {
     }
 
     public Personel getTeknikEleman() {
-        if(this.teknikEleman == null)
+        if (this.teknikEleman == null)
             this.teknikEleman = new TeknikEleman();
         return teknikEleman;
     }
@@ -406,12 +524,68 @@ public class PersonelContoller implements Initializable {
     }
 
     public Personel getTeknisyen() {
-        if(this.teknisyen == null)
+        if (this.teknisyen == null)
             this.teknisyen = new Teknisyen();
         return teknisyen;
     }
 
     public void setTeknisyen(Personel teknisyen) {
         this.teknisyen = teknisyen;
+    }
+
+    public TableView getPersonelTable() {
+        return personelTable;
+    }
+
+    public void setPersonelTable(TableView personelTable) {
+        this.personelTable = personelTable;
+    }
+
+    public TableColumn<Personel, Long> getTableTC() {
+        return tableTC;
+    }
+
+    public void setTableTC(TableColumn<Personel, Long> tableTC) {
+        this.tableTC = tableTC;
+    }
+
+    public TableColumn<Personel, String> getTableAdi() {
+        return tableAdi;
+    }
+
+    public void setTableAdi(TableColumn<Personel, String> tableAdi) {
+        this.tableAdi = tableAdi;
+    }
+
+    public TableColumn<Personel, String> getTableSoyadi() {
+        return tableSoyadi;
+    }
+
+    public void setTableSoyadi(TableColumn<Personel, String> tableSoyadi) {
+        this.tableSoyadi = tableSoyadi;
+    }
+
+    public TableColumn<Personel, String> getTableDepartmani() {
+        return tableDepartmani;
+    }
+
+    public void setTableDepartmani(TableColumn<Personel, String> tableDepartmani) {
+        this.tableDepartmani = tableDepartmani;
+    }
+
+    public TableColumn<Personel, Date> getTableIsegiris() {
+        return tableIsegiris;
+    }
+
+    public void setTableIsegiris(TableColumn<Personel, Date> tableIsegiris) {
+        this.tableIsegiris = tableIsegiris;
+    }
+
+    public ObservableList<Personel> getList() {
+        return list;
+    }
+
+    public void setList(ObservableList<Personel> list) {
+        this.list = list;
     }
 }

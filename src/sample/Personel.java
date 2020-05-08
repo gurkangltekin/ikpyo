@@ -1,6 +1,7 @@
 package sample;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.*;
 
 public class Personel {
@@ -8,7 +9,7 @@ public class Personel {
     private String adi;
     private String soyadi;
     private Long TCKimlik;
-    private Date iseGiris;
+    private LocalDate iseGiris;
     private String departman;
     private int maas;
     private List<Timestamp> girisSaati;
@@ -57,13 +58,11 @@ public class Personel {
         this.TCKimlik = TCKimlik;
     }
 
-    public Date getIseGiris() {
-        if(this.iseGiris == null)
-            this.iseGiris = new Date();
+    public LocalDate getIseGiris() {
         return iseGiris;
     }
 
-    public void setIseGiris(Date iseGiris) {
+    public void setIseGiris(LocalDate iseGiris) {
         this.iseGiris = iseGiris;
     }
 

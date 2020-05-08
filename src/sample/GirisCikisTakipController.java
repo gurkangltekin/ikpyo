@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-
 import java.io.IOException;
 
 public class GirisCikisTakipController {
@@ -13,13 +12,13 @@ public class GirisCikisTakipController {
     @FXML
     private AnchorPane anchorPane;
     @FXML
-     Button geri;
+    private Button geri;
     private Main main;
 
     public void geri(ActionEvent e) throws IOException {
-        this.main.setTitle("Anasayfa");
+        this.getMain().setTitle("Anasayfa");
         AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("anasayfa.fxml"));
-        this.anchorPane.getChildren().setAll(pane);
+        this.getAnchorPane().getChildren().setAll(pane);
     }
 
 
@@ -32,10 +31,20 @@ public class GirisCikisTakipController {
     }
 
     public Main getMain() {
+        if(this.main == null)
+            this.main = new Main();
         return main;
     }
 
     public void setMain(Main main) {
         this.main = main;
+    }
+
+    public Button getGeri() {
+        return geri;
+    }
+
+    public void setGeri(Button geri) {
+        this.geri = geri;
     }
 }
