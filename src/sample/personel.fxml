@@ -24,7 +24,6 @@
       <ListView fx:id="iseGirisSaatleri" layoutX="320.0" layoutY="76.0" prefHeight="250.0" prefWidth="200.0" />
       <Button fx:id="kisiyiGuncelle_yeniKisiEkle" layoutX="30.0" layoutY="314.0" mnemonicParsing="false" onAction="#personelBilgiGuncelleEkle" prefWidth="120.0" text="Yeni Personel Ekle" />
       <Button fx:id="istenCikar" layoutX="199.0" layoutY="314.0" mnemonicParsing="false" onAction="#personelIstenCikar" text="İşten Çıkar" />
-<!--      <ListView fx:id="personelListesi" layoutX="30.0" layoutY="384.0" onMouseClicked="#personelDetay" prefHeight="355.0" prefWidth="964.0" />-->
       <DatePicker fx:id="iseGirisTarihi" layoutX="122.0" layoutY="176.0" prefHeight="25.0" prefWidth="149.0" />
       <Button fx:id="formuTemizle" layoutX="900.0" layoutY="353.0" mnemonicParsing="false" onAction="#formuTemizle" text="Formu Temizle" />
       <Button fx:id="geri" layoutX="16.0" layoutY="14.0" mnemonicParsing="false" onAction="#geri" text="Geri" />

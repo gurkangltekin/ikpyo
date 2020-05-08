@@ -62,9 +62,9 @@ public class PazarlamaciController extends PersonelContoller {
     public void initialize(URL location, ResourceBundle resources) {
         this.personel();
         int size = this.getPersonelList().size();
-        for(int i = 0 ; i < size ; i++){
+        /*for(int i = 0 ; i < size ; i++){
             this.getPersonelListesi().getItems().add(this.getPersonelList().get(i).getAdi() + " " + this.getPersonelList().get(i).getSoyadi());
-        }
+        }*/
         this.getIseGirisTarihi().setValue(LocalDate.now());
         this.getFotograf().setImage(new Image("/sample/unnamed.jpg"));
         this.getFormuTemizle().setVisible(false);
@@ -75,7 +75,7 @@ public class PazarlamaciController extends PersonelContoller {
     public void personelDetay(MouseEvent e) {
         int size = this.getPersonelList().size();
         for(int i = 0 ; i < size ; i++){
-            if(this.getPersonelListesi().getSelectionModel().getSelectedItem().equals(this.getPersonelList().get(i).getAdi() + " " + this.getPersonelList().get(i).getSoyadi())){
+            /*if(this.getPersonelListesi().getSelectionModel().getSelectedItem().equals(this.getPersonelList().get(i).getAdi() + " " + this.getPersonelList().get(i).getSoyadi())){
                 Pazarlamaci pazarlamaci = (Pazarlamaci) this.getPersonelList().get(i);
                 this.getTcKimlikNo().setText(pazarlamaci.getTCKimlik().toString());
                 this.getAdi().setText(pazarlamaci.getAdi());
@@ -86,7 +86,7 @@ public class PazarlamaciController extends PersonelContoller {
                 this.getGunlukSatis().setText("0");
                 this.getToplamSatis().setText(String.valueOf(pazarlamaci.getToplamSatis()));
                 this.getFotograf().setImage(new Image(pazarlamaci.getFotografUrl()));
-            }
+            }*/
         }
         this.getFormuTemizle().setVisible(true);
         this.getIstenCikar().setVisible(true);
@@ -103,18 +103,18 @@ public class PazarlamaciController extends PersonelContoller {
             p.setMaas(Integer.parseInt(this.getMaas().getText()));
             p.setDepartman(this.getDepartman().getText());
             p.setFotografUrl("/sample/unnamed.jpg");
-            this.personelOlustur(p);
+            //this.personelOlustur(p);
         }else{
             //persoenl bilgi guncelleme islemleri
         }
     }
 
-    @Override
+    /*@Override
     public void personelOlustur(Pazarlamaci p) {
         this.getPersonelList().add(p);
-        this.getPersonelListesi().getItems().add(this.getPersonelList().get((this.getPersonelList().size()-1)).getAdi() + " " + this.getPersonelList().get((this.getPersonelList().size()-1)).getSoyadi());
+        //this.getPersonelListesi().getItems().add(this.getPersonelList().get((this.getPersonelList().size()-1)).getAdi() + " " + this.getPersonelList().get((this.getPersonelList().size()-1)).getSoyadi());
         this.formTemizle();
-    }
+    }*/
 
     public void setGunlukSatis(TextField gunlukSatis) {
         this.gunlukSatis = gunlukSatis;

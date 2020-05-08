@@ -48,7 +48,7 @@ public class IsciController extends PersonelContoller {
         this.personel();
         int size = this.getPersonelList().size();
         for(int i = 0 ; i < size ; i++){
-            this.getPersonelListesi().getItems().add(this.getPersonelList().get(i).getAdi() + " " + this.getPersonelList().get(i).getSoyadi());
+            //this.getPersonelListesi().getItems().add(this.getPersonelList().get(i).getAdi() + " " + this.getPersonelList().get(i).getSoyadi());
         }
         this.getIseGirisTarihi().setValue(LocalDate.now());
         this.getFotograf().setImage(new javafx.scene.image.Image("/sample/unnamed.jpg"));
@@ -60,7 +60,7 @@ public class IsciController extends PersonelContoller {
     public void personelDetay(MouseEvent e) {
         int size = this.getPersonelList().size();
         for(int i = 0 ; i < size ; i++){
-            if(this.getPersonelListesi().getSelectionModel().getSelectedItem().equals(this.getPersonelList().get(i).getAdi() + " " + this.getPersonelList().get(i).getSoyadi())){
+            /*if(this.getPersonelListesi().getSelectionModel().getSelectedItem().equals(this.getPersonelList().get(i).getAdi() + " " + this.getPersonelList().get(i).getSoyadi())){
                 Isci pazarlamaci = (Isci) this.getPersonelList().get(i);
                 this.getTcKimlikNo().setText(pazarlamaci.getTCKimlik().toString());
                 this.getAdi().setText(pazarlamaci.getAdi());
@@ -71,7 +71,7 @@ public class IsciController extends PersonelContoller {
                 this.getGunlukUretim().setText("0");
                 this.getToplamUretim().setText(String.valueOf(pazarlamaci.getToplamUretim()));
                 this.getFotograf().setImage(new Image(pazarlamaci.getFotografUrl()));
-            }
+            }*/
         }
         this.getFormuTemizle().setVisible(true);
         this.getIstenCikar().setVisible(true);
@@ -88,18 +88,18 @@ public class IsciController extends PersonelContoller {
             p.setMaas(Integer.parseInt(this.getMaas().getText()));
             p.setDepartman(this.getDepartman().getText());
             p.setFotografUrl("/sample/unnamed.jpg");
-            this.personelOlustur(p);
+            //this.personelOlustur(p);
         }else{
             //persoenl bilgi guncelleme islemleri
         }
     }
 
-    @Override
+    /*@Override
     public void personelOlustur(Isci i) {
         this.getPersonelList().add(i);
         this.getPersonelListesi().getItems().add(this.getPersonelList().get((this.getPersonelList().size()-1)).getAdi() + " " + this.getPersonelList().get((this.getPersonelList().size()-1)).getSoyadi());
         this.formTemizle();
-    }
+    }*/
 
     public TextField getGunlukUretim() {
         return gunlukUretim;

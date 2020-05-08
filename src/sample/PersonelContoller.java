@@ -44,8 +44,6 @@ public class PersonelContoller implements Initializable {
     @FXML
     private ListView<String> istenCikisSaatleri;
     @FXML
-    private ListView<String> personelListesi;
-    @FXML
     private Button kisiyiGuncelle_yeniKisiEkle;
     @FXML
     private Button istenCikar;
@@ -229,7 +227,7 @@ public class PersonelContoller implements Initializable {
         }
     }
 
-    public void personelOlustur(Pazarlamaci p) {
+    /*public void personelOlustur(Pazarlamaci p) {
         this.getPersonelList().add(p);
         this.getPersonelListesi().getItems().add(this.getPersonelList().get((this.getPersonelList().size() - 1)).getAdi() + " " + this.getPersonelList().get((this.getPersonelList().size() - 1)).getSoyadi());
         this.formTemizle();
@@ -245,7 +243,7 @@ public class PersonelContoller implements Initializable {
         this.getPersonelList().add(i);
         this.getPersonelListesi().getItems().add(this.getPersonelList().get((this.getPersonelList().size() - 1)).getAdi() + " " + this.getPersonelList().get((this.getPersonelList().size() - 1)).getSoyadi());
         this.formTemizle();
-    }
+    }*/
 
     public void personelOlustur() {
         String str = "!" + this.getAdi().getText() + "@" + this.getSoyadi().getText() + "%" + this.getTcKimlikNo().getText() + "&" + this.getMaas().getText() + "?" + this.getDepartman().getText() + "*" + this.getIseGirisTarihi().getValue() + "_";
@@ -397,14 +395,6 @@ public class PersonelContoller implements Initializable {
 
     public void setIstenCikisSaatleri(ListView<String> istenCikisSaatleri) {
         this.istenCikisSaatleri = istenCikisSaatleri;
-    }
-
-    public ListView<String> getPersonelListesi() {
-        return personelListesi;
-    }
-
-    public void setPersonelListesi(ListView<String> personelListesi) {
-        this.personelListesi = personelListesi;
     }
 
     public Button getKisiyiGuncelle_yeniKisiEkle() {
