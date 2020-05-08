@@ -36,5 +36,6 @@
            <TableColumn fx:id="tableIsegiris" prefWidth="162.0" text="İşe Giriş Tarihi" />
         </columns>
       </TableView>
+      <Button fx:id="fotoSec" layoutX="859.0" layoutY="302.0" onAction="#fotografSec" mnemonicParsing="false" text="Fotoğraf Seç" />
    </children>
 </AnchorPane>

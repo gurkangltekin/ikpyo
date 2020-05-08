@@ -13,10 +13,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -67,6 +71,9 @@ public class PersonelContoller implements Initializable {
     private TableColumn<Personel, String> tableDepartmani;
     @FXML
     private TableColumn<Personel, Date> tableIsegiris;
+    @FXML
+    private Button fotoSec;
+    private String fotoName;
 
     private Main main = new Main();
 
@@ -79,6 +86,31 @@ public class PersonelContoller implements Initializable {
     private Personel teknisyen;
 
     private ObservableList<Personel> list = FXCollections.observableArrayList();
+
+
+
+
+    public String fotografSec(ActionEvent e) {
+        FileChooser fileChooser = new FileChooser();
+        Stage secondaryStage = new Stage();
+        File selectedFile = fileChooser.showOpenDialog(secondaryStage);
+        fotoName = selectedFile.getName();
+        File source = new File(selectedFile.getPath());
+        File dest = new File("C:\\Users\\gurkangltekin\\OneDrive - Istanbul Universitesi\\Belgeler\\IdeaProjects\\ikpyo\\src\\images\\" + fotoName);
+        try {
+            Files.copy(source.toPath(), dest.toPath(),
+                    StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+        return selectedFile.getName();
+    }
+
+
+
+
+
+
 
     public void personel() {
         this.getPersonelTable().getItems().clear();
@@ -577,5 +609,13 @@ public class PersonelContoller implements Initializable {
 
     public void setList(ObservableList<Personel> list) {
         this.list = list;
+    }
+
+    public Button getFotoSec() {
+        return fotoSec;
+    }
+
+    public void setFotoSec(Button fotoSec) {
+        this.fotoSec = fotoSec;
     }
 }
