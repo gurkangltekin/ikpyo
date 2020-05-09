@@ -64,7 +64,7 @@ public class TeknisyenController  {
             this.teknisyenListesi.getItems().add(this.getTeknisyenList().get(i).getAdi() + " " + this.getTeknisyenList().get(i).getSoyadi());
         }
         this.iseGirisTarihi.setValue(LocalDate.now());
-        this.fotograf.setImage(new Image("/sample/unnamed.jpg"));
+        this.fotograf.setImage(new Image("/images/unnamed.jpg"));
         this.formuTemizle.setVisible(false);
         this.istenCikar.setVisible(false);
     }
@@ -105,7 +105,7 @@ public class TeknisyenController  {
             this.getSoyadi().setText("Gültekin");
             this.getDepartman().setText("Yazılımcı");
             this.getMaas().setText("2000");
-            this.getFotograf().setImage(new Image("/sample/agent47.png"));
+            this.getFotograf().setImage(new Image("/images/agent47.png"));
         } else if(teknisyenListesi.getSelectionModel().getSelectedItem().equals("Suzan Nur Bülbül")){
             this.getTcKimlikNo().setText("10000000002");
             this.getAdi().setText("Suzan Nur");
@@ -114,14 +114,14 @@ public class TeknisyenController  {
             this.getIseGirisTarihi().setValue(ld);
             this.getDepartman().setText("Bilişim");
             this.getMaas().setText("3000");
-            this.getFotograf().setImage(new Image("/sample/usmanaga.png"));
+            this.getFotograf().setImage(new Image("/images/usmanaga.png"));
         } else if (teknisyenListesi.getSelectionModel().getSelectedItem().equals("Ahmet Uysal")){
             this.getTcKimlikNo().setText("10000000004");
             this.getAdi().setText("Ahmet");
             this.getSoyadi().setText("Uysal");
             this.getDepartman().setText("Müdür");
             this.getMaas().setText("4000");
-            this.getFotograf().setImage(new Image("/sample/unnamed.jpg"));
+            this.getFotograf().setImage(new Image("/images/unnamed.jpg"));
         }else{
             this.getTcKimlikNo().setText("Bilgi Yok!");
             this.getAdi().setText("Bilgi Yok!");
@@ -142,7 +142,7 @@ public class TeknisyenController  {
         maas.setText("");
         departman.setText("");
         iseGirisTarihi.setValue(LocalDate.now());
-        this.fotograf.setImage(new Image("/sample/unnamed.jpg"));
+        this.fotograf.setImage(new Image("/images/unnamed.jpg"));
         this.getKisiyiGuncelle_yeniKisiEkle().setText("Yeni Personel Ekle");
         this.formuTemizle.setVisible(false);
         this.istenCikar.setVisible(false);

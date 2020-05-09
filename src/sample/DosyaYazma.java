@@ -1,6 +1,7 @@
 package sample;
 
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +19,11 @@ public class DosyaYazma {
 
 
 	public void dosyaGuncelle(String str, List<String> lines) throws IOException {
+		String path = Paths.get("").toAbsolutePath().toString();
 		int size = lines.size();
 		for ( int i = 0 ; i < size ; i++ ) {
 			if ( i == 0 ){
-				File file = new File(str + ".txt");
+				File file = new File(path + "\\src\\dosyalar\\" + str + ".txt");
 				if(!file.exists()){
 					file.createNewFile();
 				}
@@ -31,7 +33,7 @@ public class DosyaYazma {
 				bw.newLine();
 				bw.close();
 			}else{
-				File file = new File(str + ".txt");
+				File file = new File(path + "\\src\\dosyalar\\" + str + ".txt");
 				if(!file.exists()){
 					file.createNewFile();
 				}
@@ -45,7 +47,8 @@ public class DosyaYazma {
 	}
 
     public List<String> dosyadanOku(String str) throws Exception {
-    	File file = new File(str + ".txt");
+		String path = Paths.get("").toAbsolutePath().toString();
+    	File file = new File(path + "\\src\\dosyalar\\" + str + ".txt");
 		FileReader fileReader = new FileReader(file);
 		String line;
 
@@ -62,7 +65,8 @@ public class DosyaYazma {
     }
 
     public void dosyayaYaz(String string) throws IOException {
-		File file = new File(string + ".txt");
+		String path = Paths.get("").toAbsolutePath().toString();
+		File file = new File(path + "\\src\\dosyalar\\" + string + ".txt");
 		if(!file.exists()){
 			file.createNewFile();
 		}
@@ -73,8 +77,23 @@ public class DosyaYazma {
 		bw.close();
     }
 
-    public String dosyadaAra() {
-        return null;
+    public boolean dosyaAra(String fName) {
+		String path = Paths.get("").toAbsolutePath().toString();
+		boolean check = false;
+		File f = new File(path + "\\src\\images\\" );
+		File[] matchingFiles = f.listFiles(new FilenameFilter() {
+			public boolean accept(File dir, String name) {
+				return name.endsWith(".jpg");
+			}
+		});
+		int size = matchingFiles.length;
+		for(int i = 0 ; i < size ; i++){
+			if(matchingFiles[i].getName().equals(fName)){
+				check = true;
+				i = size;
+			}
+		}
+        return check;
     }
 
 	public String getYazilacakDeger() {

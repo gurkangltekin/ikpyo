@@ -3,6 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane fx:id="anchorPane" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.PersonelContoller">
    <children>
@@ -36,6 +37,7 @@
            <TableColumn fx:id="tableIsegiris" prefWidth="162.0" text="İşe Giriş Tarihi" />
         </columns>
       </TableView>
-      <Button fx:id="fotoSec" layoutX="859.0" layoutY="302.0" onAction="#fotografSec" mnemonicParsing="false" text="Fotoğraf Seç" />
+      <Button fx:id="fotoSec" layoutX="835.0" layoutY="302.0" mnemonicParsing="false" onAction="#fotografSec" text="Fotoğraf Seç" />
+      <Label fx:id="FotoName" layoutX="755.0" layoutY="331.0" prefHeight="17.0" prefWidth="226.0" />
    </children>
 </AnchorPane>

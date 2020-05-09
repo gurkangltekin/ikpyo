@@ -3,21 +3,15 @@ package sample;
 import java.util.List;
 
 public class Isci extends Personel{
-    private List<Integer> gunlukUretim;
     private int aylikHedef;
     private int ToplamUretim;
+
+    public Isci() {
+    }
 
     public Isci(int aylikHedef, int ToplamUretim){
         this.aylikHedef = aylikHedef;
         this.ToplamUretim = ToplamUretim;
-    }
-
-    public List<Integer> getGunlukUretim() {
-        return gunlukUretim;
-    }
-
-    public void setGunlukUretim(List<Integer> gunlukUretim) {
-        this.gunlukUretim = gunlukUretim;
     }
 
     public int getAylikHedef() {
