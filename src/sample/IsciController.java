@@ -11,15 +11,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.UUID;
 
 import static java.lang.Integer.parseInt;
@@ -185,6 +180,71 @@ public class IsciController extends PersonelContoller {
     }
 
     @Override
+    public void personelBilgiGuncelleEkle(ActionEvent e) {
+        if (this.getTcKimlikNo().getText().equals("")) {
+            this.getHata().setText("T.C. Kimlik Numarası alanı boş olamaz!");
+        } else {
+            try {
+                Long l = Long.valueOf(this.getTcKimlikNo().getText());
+                if (l < 10000000000L || l > 99999999998L) {
+                    this.getHata().setText("T.C. Kimlik Numarası 11 Haneli Olmalı!");
+                } else {
+                    if (l % 2 != 0) {
+                        this.getHata().setText("T.C. Kimlik Numarası tek olamaz!");
+                    } else {
+                        if (this.getAdi().getText().equals("")) {
+                            this.getHata().setText("İsim alanı boş olamaz!");
+                        } else {
+                            if (this.getSoyadi().getText().equals("")) {
+                                this.getHata().setText("Soyisim alanı boş olamaz!");
+                            } else {
+                                if (this.getMaas().getText().equals("")) {
+                                    this.getHata().setText("Maaş alanı boş olamaz!");
+                                } else {
+                                    try {
+                                        parseInt(this.getMaas().getText());
+                                        if (this.getDepartman().getText().equals("")) {
+                                            this.getHata().setText("Departman alanı boş olamaz!");
+                                        } else {
+                                            if (this.getKisiyiGuncelle_yeniKisiEkle().getText().equals("Yeni Personel Ekle")) {
+                                                if (this.getDepartman().getText().equals("İşçi")) {
+                                                    this.setIsci(new Isci());
+                                                    this.getIsci().setAdi(this.getAdi().getText());
+                                                    this.getIsci().setSoyadi(this.getSoyadi().getText());
+                                                    this.getIsci().setTCKimlik(Long.valueOf(this.getTcKimlikNo().getText()));
+                                                    this.getIsci().setMaas(parseInt(this.getMaas().getText()));
+                                                    this.getIsci().setDepartman(this.getDepartman().getText());
+                                                    this.getIsci().setFotoName(this.getFotoName().getText());
+                                                    this.getIsci().setIseGiris(this.getIseGirisTarihi().getValue());
+                                                    this.personelOlustur((Isci) this.getIsci());
+                                                } else {
+                                                    this.getHata().setText("Bu sayfadan sadece İşçi departmanından eleman ekleyebilirsiniz!");
+                                                }
+                                            } else {
+                                                if (this.getDepartman().getText().equals("İşçi")) {
+                                                    this.personelGuncelle();
+                                                } else {
+                                                    this.getHata().setText("Bu sayfadan sadece İşçi departmanından eleman düzeleyebilirsiniz!");
+                                                }
+                                            }
+                                        }
+                                    } catch (Exception ex) {
+                                        this.getHata().setText("Maas alanına numerik ifadeler girin!");
+                                        System.out.println(ex.getMessage());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                this.getHata().setText("T.C. Kimlik alanına numerik ifadeler girin!");
+                System.out.println(ex.getMessage());
+            }
+        }
+    }
+
+    @Override
     public void personelDetay(MouseEvent e) {
         super.personelDetay(e);
         // tablomuzda secilen verinin alinmiyor
@@ -202,119 +262,213 @@ public class IsciController extends PersonelContoller {
         this.getToplamUretim().setText(String.valueOf(this.getSelectedIsci().getToplamUretim()));
     }
 
-    @Override
-    public void personelGuncelle(Isci isci) {
-        isci.setAylikHedef(parseInt(this.getAylikHedef().getText()));
-        isci.setToplamUretim(parseInt(this.getToplamUretim().getText()));
-        try {
-            if (this.personelGuncelle()) { /*
-             *  string degiskeni, dosyaya yazilacak yaziyi, name dagiskenini ise personelin fotograf isminin benzersiz
-             *  olmasi icin random bir dosya ismi belirlememizde kullancagiz.
-             * */
-                String string;
-                /*
-                 * fotograf olarak herhangi bir dosya secilmediyse mevcuttaki fotograf adininin degistirilmeden kullanilmasini
-                 * saglamak icin dosyaya bu fotograf adiyla kaydediyoruz
-                 * */
-                if (isci.getFotoName().equals("")) {
-                    isci.setFotoName(this.getSelectedPersonel().getFotoName());
-                    string = "!" + isci.getAdi() + "@" + isci.getSoyadi() + "%" + isci.getTCKimlik().toString()
-                            + "&" + isci.getMaas() + "?" + isci.getDepartman() + "*" + isci.getIseGiris().toString() + "_" +
-                            isci.getFotoName() + "<" + isci.getToplamUretim() + "|" + isci.getAylikHedef() + ">";
+
+    public void personelGuncelle() {
+        if (this.getAylikHedef().getText().equals("")) {
+            this.getHata().setText("Aylık Hedef alanı boş bırakılamaz!");
+        } else {
+            try {
+                parseInt(this.getAylikHedef().getText());
+                if (this.getToplamUretim().getText().equals("")) {
+                    this.getHata().setText("Toplam Üretim alanı boş bırakılamaz!");
                 } else {
-                    isci.setFotoName(this.getName());
-                    string = "!" + isci.getAdi() + "@" + isci.getSoyadi() + "%" + isci.getTCKimlik().toString()
-                            + "&" + isci.getMaas() + "?" + isci.getDepartman() + "*" + isci.getIseGiris().toString() + "_" +
-                            isci.getFotoName() + ".jpg<" + isci.getToplamUretim() + "|" + isci.getAylikHedef() + ">";
-                }
-                /*
-                 * check degiskeni, dosyada degistirilmesi gereken kisinin satiri bulunmadiysa veya kisinin kimlik numarasi
-                 * degistiyse yeni personel olusturulmasi icin gerekli islemlerin saglanmasini gercekletirilmesi adina
-                 * disarda kontrol edilecek ve yeni personel olusturulacak
-                 *
-                 * */
-                boolean check = false;
-                /*
-                 * baslangicta dosyadaki satirlar okunuyor
-                 * */
-                List<String> lines = this.getDosyaYazOku().dosyadanOku("isci");
-                int size = lines.size();
-                for (int i = 0; i < size; i++) {
-                    String str = lines.get(i);
-                    int strsize = str.length();
-                    for (int j = 0; j < strsize; j++) {
-                        String tckimlik = "";
-                        /*
-                         * formdaki kimlik numarasinin dosyada var olup olmadigini kontrol etmek amaciyla her satirdaki
-                         * kimlik numaralari okunuyor
-                         * */
-                        if (str.charAt(j) == '%') {
-                            j++;
-                            while (str.charAt(j) != '&') {
-                                tckimlik += str.charAt(j++);
+                    try {
+                        parseInt(this.getToplamUretim().getText());
+                        if (!this.personelKontrol()) {
+                            this.getHata().setText("Bu kimlik numarasıyla kayıtlı bir personel yok!");
+                        } else {
+                            Isci isci = new Isci(parseInt(this.getAylikHedef().getText()), parseInt(this.getToplamUretim().getText()));
+                            isci.setAdi(this.getAdi().getText());
+                            isci.setSoyadi(this.getSoyadi().getText());
+                            isci.setTCKimlik(Long.valueOf(this.getTcKimlikNo().getText()));
+                            isci.setMaas(parseInt(this.getMaas().getText()));
+                            isci.setDepartman(this.getDepartman().getText());
+                            isci.setFotoName(this.getFotoName().getText());
+                            isci.setIseGiris(this.getIseGirisTarihi().getValue());
+                            try {
+                                /*
+                                 *  string degiskeni, dosyaya yazilacak yaziyi, name dagiskenini ise personelin fotograf isminin benzersiz
+                                 *  olmasi icin random bir dosya ismi belirlememizde kullancagiz.
+                                 * */
+                                String string;
+                                /*
+                                 * fotograf olarak herhangi bir dosya secilmediyse mevcuttaki fotograf adininin degistirilmeden kullanilmasini
+                                 * saglamak icin dosyaya bu fotograf adiyla kaydediyoruz
+                                 * */
+                                boolean a = false;
+                                if (isci.getFotoName().equals("")) {
+                                    isci.setFotoName(this.getSelectedPersonel().getFotoName());
+                                    string = "!" + isci.getAdi() + "@" + isci.getSoyadi() + "%" + isci.getTCKimlik().toString()
+                                            + "&" + isci.getMaas() + "?" + isci.getDepartman() + "*" + isci.getIseGiris().toString() + "_" +
+                                            isci.getFotoName() + "<" + isci.getToplamUretim() + "|" + isci.getAylikHedef() + ">";
+                                } else {
+                                    isci.setFotoName(UUID.randomUUID().toString());
+                                    string = "!" + isci.getAdi() + "@" + isci.getSoyadi() + "%" + isci.getTCKimlik().toString()
+                                            + "&" + isci.getMaas() + "?" + isci.getDepartman() + "*" + isci.getIseGiris().toString() + "_" +
+                                            isci.getFotoName() + ".jpg<" + isci.getToplamUretim() + "|" + isci.getAylikHedef() + ">";
+                                    a = true;
+                                }
+                                /*
+                                 * baslangicta dosyadaki satirlar okunuyor
+                                 * */
+                                List<String> lines = this.getDosyaYazOku().dosyadanOku("personel");
+                                int size = lines.size();
+                                for (int i = 0; i < size; i++) {
+                                    String str = lines.get(i);
+                                    int strsize = str.length();
+                                    for (int j = 0; j < strsize; j++) {
+                                        String tckimlik = "";
+                                        /*
+                                         * formdaki kimlik numarasinin dosyada var olup olmadigini kontrol etmek amaciyla her satirdaki
+                                         * kimlik numaralari okunuyor
+                                         * */
+                                        if (str.charAt(j) == '%') {
+                                            j++;
+                                            while (str.charAt(j) != '&') {
+                                                tckimlik += str.charAt(j++);
+                                            }
+                                        }
+                                        /*
+                                         * formdaki kimlik numarasi bu satirdaki okunan kimlik numarasi ile eslesiyorsa bu sart icindeki
+                                         * islemler gerceklesecek
+                                         * */
+                                        if (tckimlik.equals(isci.getTCKimlik().toString())) {
+                                            /*
+                                             * eger aaa degiskeni true ise bu personelin kisisel fotografi var demektir ve secilen
+                                             * fotograf bizim images klasorumuze kaydedilecek.
+                                             * */
+                                            if (a) {
+                                                /*
+                                                 * a degiskeni, mevcut fotograf dosyada varsa eger onu silip yenisini yuklemek amaciyla
+                                                 * kontrol etmemize yariyor
+                                                 * */
+                                                boolean aa = this.getDosyaYazOku().dosyaAra(this.getSelectedPersonel().getFotoName());
+                                                // dosya adi unnamed degilse silme islemi gerceklesecek.
+                                                if (aa && !this.getSelectedPersonel().getFotoName().equals("unnamed.jpg")) {
+                                                    this.getDosyaYazOku().dosyaSil(this.getSelectedPersonel().getFotoName());
+                                                }
+                                                this.getDosyaYazOku().dosyaKopyala(this.getFotoUrl(), isci.getFotoName());
+                                            }
+                                            //guncellenecek satir siliniyoe
+                                            lines.remove(i);
+                                            //yeni bilgi listeye ekleniyor
+                                            lines.add(string);
+                                            //yeni bilgilerle dosyaya yazma islemi gerceklestiriliyor.
+                                            this.getDosyaYazOku().dosyaGuncelle("personel", lines);
+                                            //daha fazla islem yapilip zaman harcanmamasi adina i size'a esitlenerek diger satirlarin kontrol edilmesi engelleniyor
+                                            i = size;
+                                        }
+                                    }
+                                }
+
+
+                                lines = this.getDosyaYazOku().dosyadanOku("isci");
+                                size = lines.size();
+                                for (int i = 0; i < size; i++) {
+                                    String str = lines.get(i);
+                                    int strsize = str.length();
+                                    for (int j = 0; j < strsize; j++) {
+                                        String tckimlik = "";
+                                        /*
+                                         * formdaki kimlik numarasinin dosyada var olup olmadigini kontrol etmek amaciyla her satirdaki
+                                         * kimlik numaralari okunuyor
+                                         * */
+                                        if (str.charAt(j) == '%') {
+                                            j++;
+                                            while (str.charAt(j) != '&') {
+                                                tckimlik += str.charAt(j++);
+                                            }
+                                        }
+                                        /*
+                                         * formdaki kimlik numarasi bu satirdaki okunan kimlik numarasi ile eslesiyorsa bu sart icindeki
+                                         * islemler gerceklesecek
+                                         * */
+                                        if (tckimlik.equals(isci.getTCKimlik().toString())) {
+                                            //guncellenecek satir siliniyoe
+                                            lines.remove(i);
+                                            //yeni bilgi listeye ekleniyor
+                                            lines.add(string);
+                                            //yeni bilgilerle dosyaya yazma islemi gerceklestiriliyor.
+                                            this.getDosyaYazOku().dosyaGuncelle("isci", lines);
+                                            //daha fazla islem yapilip zaman harcanmamasi adina i size'a esitlenerek diger satirlarin kontrol edilmesi engelleniyor
+                                            i = size;
+                                        }
+                                    }
+                                }
+                                this.personelTabosuGuncelle();
+                                this.formTemizle();
+                                this.getHata().setText("");
+
+                            } catch (Exception ex) {
+                                System.out.println(ex.getMessage());
                             }
                         }
-                        /*
-                         * formdaki kimlik numarasi bu satirdaki okunan kimlik numarasi ile eslesiyorsa bu sart icindeki
-                         * islemler gerceklesecek
-                         * */
-                        if (tckimlik.equals(isci.getTCKimlik().toString())) {
-                            //guncellenecek satir siliniyoe
-                            lines.remove(i);
-                            //guncelleme islemi yapildigi isaretleniyor
-                            check = true;
-                            //yeni bilgi listeye ekleniyor
-                            lines.add(string);
-                            //yeni bilgilerle dosyaya yazma islemi gerceklestiriliyor.
-                            this.getDosyaYazOku().dosyaGuncelle("isci", lines);
-                            //daha fazla islem yapilip zaman harcanmamasi adina i size'a esitlenerek diger satirlarin kontrol edilmesi engelleniyor
-                            i = size;
-                        }
+                    } catch (Exception e) {
+                        this.getHata().setText("Toplam Üretim alanına numerik ifadeler girin!");
+                        System.out.println(e.getMessage());
                     }
                 }
-                if (!check) {
-                    //guncellenecek kisi dosyada bulunmadiysa yeni personel olusturluyor.
-                    this.personelOlustur(isci);
-                }
+            } catch (Exception e) {
+                this.getHata().setText("Aylık Hedef alanına numerik ifadeler girin!");
+                System.out.println(e.getMessage());
             }
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
         }
     }
 
     @Override
     public void personelOlustur(Isci isci) {
-        String string;
-        isci.setToplamUretim(parseInt(this.getToplamUretim().getText()));
-        isci.setAylikHedef(parseInt(this.getAylikHedef().getText()));
-        if (isci.getFotoName().equals("")) {
-            isci.setFotoName("unnamed.jpg");
-            string = "!" + isci.getAdi() + "@" + isci.getSoyadi() + "%" + isci.getTCKimlik().toString()
-                    + "&" + isci.getMaas() + "?" + isci.getDepartman() + "*" + isci.getIseGiris().toString()
-                    + "_" + isci.getFotoName() + "<" + isci.getToplamUretim() + "|" + isci.getAylikHedef() + ">";
+        boolean check = false;
+        if (this.getAylikHedef().getText().equals("")) {
+            this.getHata().setText("Aylık Hedef alanı boş bırakılamaz!");
         } else {
-            isci.setFotoName(UUID.randomUUID().toString());
-            string = "!" + isci.getAdi() + "@" + isci.getSoyadi() + "%" + isci.getTCKimlik().toString()
-                    + "&" + isci.getMaas() + "?" + isci.getDepartman() + "*" + isci.getIseGiris().toString() + "_"
-                    + isci.getFotoName() + ".jpg<" + isci.getToplamUretim() + "|" + isci.getAylikHedef() + ">";
-            File source = new File(this.getFotoUrl());
-            File dest = new File("C:\\Users\\gurkangltekin\\OneDrive - Istanbul Universitesi\\Belgeler\\IdeaProjects\\ikpyo\\src\\images\\" + isci.getFotoName() + ".jpg");
             try {
-                Files.copy(source.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException e) {
-                e.printStackTrace();
+                parseInt(this.getAylikHedef().getText());
+                if (this.getToplamUretim().getText().equals("")) {
+                    this.getHata().setText("Toplam Üretim alanı boş bırakılamaz!");
+                } else {
+                    try {
+                        parseInt(this.getToplamUretim().getText());
+                        if (this.personelKontrol()) {
+                            this.getHata().setText("Bu kimlik numarasıyla kayıtlı bir personel zaten var!");
+                        } else {
+                            String string;
+                            isci.setToplamUretim(parseInt(this.getToplamUretim().getText()));
+                            isci.setAylikHedef(parseInt(this.getAylikHedef().getText()));
+                            if (isci.getFotoName().equals("")) {
+                                isci.setFotoName("unnamed.jpg");
+                                string = "!" + isci.getAdi() + "@" + isci.getSoyadi() + "%" + isci.getTCKimlik().toString()
+                                        + "&" + isci.getMaas() + "?" + isci.getDepartman() + "*" + isci.getIseGiris().toString()
+                                        + "_" + isci.getFotoName() + "<" + isci.getToplamUretim() + "|" + isci.getAylikHedef() + ">";
+                            } else {
+                                isci.setFotoName(UUID.randomUUID().toString());
+                                string = "!" + isci.getAdi() + "@" + isci.getSoyadi() + "%" + isci.getTCKimlik().toString()
+                                        + "&" + isci.getMaas() + "?" + isci.getDepartman() + "*" + isci.getIseGiris().toString() + "_"
+                                        + isci.getFotoName() + ".jpg<" + isci.getToplamUretim() + "|" + isci.getAylikHedef() + ">";
+                                this.getDosyaYazOku().dosyaKopyala(this.getFotoUrl(), isci.getFotoName());
+                            }
+
+                            this.getDosyaYazOku().setYazilacakDeger(string);
+                            try {
+                                this.getDosyaYazOku().dosyayaYaz("personel");
+                                this.getDosyaYazOku().dosyayaYaz("isci");
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            this.personelTabosuGuncelle();
+                            this.formTemizle();
+                            this.getHata().setText("");
+
+                        }
+                    } catch (Exception e) {
+                        this.getHata().setText("Toplam Üretim alanına numerik ifadeler girin!");
+                        System.out.println(e.getMessage());
+                    }
+                }
+            } catch (Exception e) {
+                this.getHata().setText("Aylık Hedef alanına numerik ifadeler girin!");
+                System.out.println(e.getMessage());
             }
         }
-
-        this.getDosyaYazOku().setYazilacakDeger(string);
-        try {
-            this.getDosyaYazOku().dosyayaYaz("personel");
-            this.getDosyaYazOku().dosyayaYaz("isci");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.personelTabosuGuncelle();
-        this.formTemizle();
     }
 
     @Override

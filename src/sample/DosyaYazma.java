@@ -1,22 +1,28 @@
 package sample;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DosyaYazma {
     private String yazilacakDeger;
-    private String dosyadanOkunanDeger;
-    private String dosyadaAranacak;
-    private Boolean dosyaKontrol;
 
-    //private File file;
-    //private FileWriter fw;
-//    private BufferedWriter bw;
-//    private FileReader fr;
-//    private BufferedReader br;
 
+	public void dosyaSil(String fName) throws IOException {
+		Files.delete(Paths.get(Paths.get("").toAbsolutePath().toString() + "\\src\\images\\" + fName));
+	}
+
+	public void dosyaKopyala(String source, String fName){
+		File so = new File(source);
+		File de = new File(Paths.get("").toAbsolutePath().toString() + "\\src\\images\\" + fName + ".jpg");
+		try {
+			Files.copy(so.toPath(), de.toPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void dosyaGuncelle(String str, List<String> lines) throws IOException {
 		String path = Paths.get("").toAbsolutePath().toString();
@@ -103,68 +109,4 @@ public class DosyaYazma {
 	public void setYazilacakDeger(String yazilacakDeger) {
 		this.yazilacakDeger = yazilacakDeger;
 	}
-
-	public String getDosyadanOkunanDeger() {
-		return dosyadanOkunanDeger;
-	}
-
-	public void setDosyadanOkunanDeger(String dosyadanOkunanDeger) {
-		this.dosyadanOkunanDeger = dosyadanOkunanDeger;
-	}
-
-	public String getDosyadaAranacak() {
-		return dosyadaAranacak;
-	}
-
-	public void setDosyadaAranacak(String dosyadaAranacak) {
-		this.dosyadaAranacak = dosyadaAranacak;
-	}
-
-	public Boolean getDosyaKontrol() {
-		return dosyaKontrol;
-	}
-
-	public void setDosyaKontrol(Boolean dosyaKontrol) {
-		this.dosyaKontrol = dosyaKontrol;
-	}
-
-	/*public File getFile() {
-		return file;
-	}
-
-	public void setFile(File file) {
-		this.file = file;
-	}*/
-
-//	public FileWriter getFw() {
-//		return fw;
-//	}
-//
-//	public void setFw(FileWriter fw) {
-//		this.fw = fw;
-//	}
-//
-//	public BufferedWriter getBw() {
-//		return bw;
-//	}
-//
-//	public void setBw(BufferedWriter bw) {
-//		this.bw = bw;
-//	}
-//
-//	public FileReader getFr() {
-//		return fr;
-//	}
-//
-//	public void setFr(FileReader fr) {
-//		this.fr = fr;
-//	}
-//
-//	public BufferedReader getBr() {
-//		return br;
-//	}
-//
-//	public void setBr(BufferedReader br) {
-//		this.br = br;
-//	}
 }

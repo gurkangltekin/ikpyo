@@ -43,5 +43,6 @@
       </TableView>
       <Button fx:id="fotoSec" layoutX="869.0" layoutY="302.0" mnemonicParsing="false" onAction="#fotografSec" text="Fotoğraf Seç" />
       <Label fx:id="FotoName" layoutX="768.0" layoutY="331.0" prefHeight="17.0" prefWidth="226.0" />
+      <Label fx:id="hata" layoutX="28.0" layoutY="357.0" textFill="RED" />
    </children>
 </AnchorPane>

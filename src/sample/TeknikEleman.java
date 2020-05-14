@@ -7,6 +7,11 @@ public class TeknikEleman extends Personel {
     public TeknikEleman() {
     }
 
+    public TeknikEleman(int tecrube, String alan) {
+        this.tecrube = tecrube;
+        Alan = alan;
+    }
+
     public int getTecrube() {
         return tecrube;
     }

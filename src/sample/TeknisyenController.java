@@ -1,312 +1,502 @@
 package sample;
 
-import java.net.URL;
+import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 
-public class TeknisyenController  {
-	
-	////
-	private Teknisyen teknisyen;
-    private List<Teknisyen> teknisyenList;
-    private DosyaYazma dosyaYazOku;
+import static java.lang.Integer.parseInt;
+
+public class TeknisyenController extends PersonelContoller {
     @FXML
-    private TextField tcKimlikNo;
+    private TextField bolum;
     @FXML
-    private TextField adi;
+    private TableView personelTable;
     @FXML
-    private TextField soyadi;
+    private TableColumn<Teknisyen, Long> tableTC;
     @FXML
-    private DatePicker iseGirisTarihi;
+    private TableColumn<Teknisyen, String> tableAdi;
     @FXML
-    private TextField maas;
+    private TableColumn<Teknisyen, String> tableSoyadi;
     @FXML
-    private TextField departman;
+    private TableColumn<Teknisyen, String> tableDepartmani;
     @FXML
-    private ListView<String> iseGirisSaatleri;
-    @FXML
-    private ListView<String> istenCikisSaatleri;
-    @FXML
-    private ListView<String> teknisyenListesi;
-    @FXML
-    private Button kisiyiGuncelle_yeniKisiEkle;
-    @FXML
-    private Button istenCikar;
-    @FXML
-    private Button formuTemizle;
-    @FXML
-    private Button geri;
-    @FXML
-    private ImageView fotograf;
-    @FXML
-    private AnchorPane anchorPane;
-	
-	///
-	//metodlar//
-    
-    public void initialize(URL location, ResourceBundle resources) {
-        this.teknisyen();
-        int size = this.getTeknisyenList().size();
-        for(int i = 0 ; i < size ; i++){
-            this.teknisyenListesi.getItems().add(this.getTeknisyenList().get(i).getAdi() + " " + this.getTeknisyenList().get(i).getSoyadi());
+    private TableColumn<Teknisyen, Date> tableIsegiris;
+
+    private ObservableList<Teknisyen> list = FXCollections.observableArrayList();
+
+    private Teknisyen selectedTeknisyen;
+
+    @Override
+    public void personelTabosuGuncelle() {
+        //ilk once mevcut tablomuzda ve listemizde herhangi bir veri varsa onlari sifirliyoruz.
+        this.getPersonelTable().getItems().clear();
+        this.getList().clear();
+        try {
+            //dosyadaki tum satirlari okuyarak bir arraylist'e atiyoruz.
+            List<String> lines = this.getDosyaYazOku().dosyadanOku("teknisyen");
+            int size = lines.size();//satir sayimizi aliyoruz.
+            /*
+             * Bu for dongusunde her bir satir icin islem gerceklesecektir. i degiskeni txt dosyamizdaki 1 satiri ifade ediyor.
+             * */
+            for (int i = 0; i < size; i++) {
+                //satirdaki yaziyi arraylist degiskeninden string degiskenine aktariyoruz
+                String str = lines.get(i);
+                //satirin uzunlugunu aliyoruz.
+                int strsize = str.length();
+                /*
+                 * Buradak degiskenler her bir satirdaki ad, soyad vb. bilgileri bir degiskene karakter karakter
+                 * yazabilmemiz icin gereklidir
+                 * */
+                String ad = "";
+                String soyad = "";
+                String tckimlik = "";
+                String maass = "";
+                String depart = "";
+                String isegiris = "";
+                String fotoName = "";
+                String bolum = "";
+                /*
+                 * Bu for dongusunde bir satirdaki her bir karakter icin islem gerceklesecektir. her j degiskeni
+                 * satirdaki 1 karakteri ifade ediyor.
+                 * */
+                for (int j = 0; j < strsize; j++) {
+                    /*
+                     * her bir sart bir ozelligi belirliyor
+                     * satirimizda isim alani '!' simgesi ile baslayip '@' simgesi ile sona eriyor
+                     * satirimizda soyisim alani '@' simgesi ile baslayip '%' simgesi ile sona eriyor
+                     * satirimizda tckimlik alani '%' simgesi ile baslayip '&' simgesi ile sona eriyor
+                     * satirimizda maas alani '&' simgesi ile baslayip '?' simgesi ile sona eriyor
+                     * satirimizda departman alani '?' simgesi ile baslayip '*' simgesi ile sona eriyor
+                     * satirimizda isegiristarihi alani '*' simgesi ile baslayip '_' simgesi ile sona eriyor
+                     * satirimizda fotograf adi alani '_' simgesi ile baslayip '<' simgesi ile sona eriyor
+                     * satirimizda bolum alani '<' simgesi ile baslayip '|' simgesi ile sona eriyor
+                     * bunlara gore de gerekli atama islemleri yapilarak personel nesnesinin olusmasi saglaniyor...
+                     * */
+                    if (str.charAt(j) == '!') {
+                        j++;
+                        while (str.charAt(j) != '@') {
+                            ad += str.charAt(j++);
+                        }
+                    }
+                    if (str.charAt(j) == '@') {
+                        j++;
+                        while (str.charAt(j) != '%') {
+                            soyad += str.charAt(j++);
+                        }
+                    }
+                    if (str.charAt(j) == '%') {
+                        j++;
+                        while (str.charAt(j) != '&') {
+                            tckimlik += str.charAt(j++);
+                        }
+                    }
+                    if (str.charAt(j) == '&') {
+                        j++;
+                        while (str.charAt(j) != '?') {
+                            maass += str.charAt(j++);
+                        }
+                    }
+                    if (str.charAt(j) == '?') {
+                        j++;
+                        while (str.charAt(j) != '*') {
+                            depart += str.charAt(j++);
+                        }
+                    }
+                    if (str.charAt(j) == '*') {
+                        j++;
+                        while (str.charAt(j) != '_') {
+                            isegiris += str.charAt(j++);
+                        }
+                    }
+                    if (str.charAt(j) == '_') {
+                        j++;
+                        while (str.charAt(j) != '<') {
+                            fotoName += str.charAt(j++);
+                        }
+                    }
+                    if (str.charAt(j) == '<') {
+                        j++;
+                        while (str.charAt(j) != '|') {
+                            bolum += str.charAt(j++);
+                        }
+                    }
+                }
+                /*
+                 * Bir satirin okunma islemi bitti ve personel nesnesi lusturularak tableview listesine
+                 * ekleme islemi gerceklestirilecek
+                 * */
+                Teknisyen teknisyen = new Teknisyen(bolum);
+                teknisyen.setAdi(ad);
+                teknisyen.setSoyadi(soyad);
+                teknisyen.setDepartman(depart);
+                teknisyen.setMaas(parseInt(maass));
+                teknisyen.setTCKimlik(Long.valueOf(tckimlik));
+                teknisyen.setIseGiris(LocalDate.parse(isegiris));
+                teknisyen.setFotoName(fotoName);
+                this.getList().add(teknisyen);
+            }
+        } catch (Exception e) {
+            //olasi bir hata durumunda karsilasilan hatayi konsol ekranina yazma islemi gerceklesecek
+            e.printStackTrace();
         }
-        this.iseGirisTarihi.setValue(LocalDate.now());
-        this.fotograf.setImage(new Image("/images/unnamed.jpg"));
-        this.formuTemizle.setVisible(false);
-        this.istenCikar.setVisible(false);
+        /*
+         * dosyadan okunarak nesneye donusturulen personel bilgilerinin tablomuza aktarma islemlerini gerceklestirelim
+         * tablomuza liste degiskenini ekleyelim
+         *  */
+        this.getPersonelTable().setItems(this.getList());
+        //Tablomuzun tableTC sutununa personel nesnemizdeki TCKimlik ozelligini aktariyoruz
+        this.getTableTC().setCellValueFactory(new PropertyValueFactory<Teknisyen, Long>("TCKimlik"));
+        //Tablomuzun tableAdi sutununa personel nesnemizdeki adi ozelligini aktariyoruz
+        this.getTableAdi().setCellValueFactory(new PropertyValueFactory<Teknisyen, String>("adi"));
+        //Tablomuzun tableSoyadi sutununa personel nesnemizdeki soyadi ozelligini aktariyoruz
+        this.getTableSoyadi().setCellValueFactory(new PropertyValueFactory<Teknisyen, String>("soyadi"));
+        //Tablomuzun tableDepartmani sutununa personel nesnemizdeki departman ozelligini aktariyoruz
+        this.getTableDepartmani().setCellValueFactory(new PropertyValueFactory<Teknisyen, String>("departman"));
+        //Tablomuzun tableIsegiris sutununa personel nesnemizdeki iseGiris ozelligini aktariyoruz
+        this.getTableIsegiris().setCellValueFactory(new PropertyValueFactory<Teknisyen, Date>("iseGiris"));
     }
-    
-    public void teknisyenBilgiGuncelleEkle(ActionEvent e){
-        if(this.getKisiyiGuncelle_yeniKisiEkle().getText().equals("Yeni Personel Ekle")){
-            this.teknisyenOlustur();
-        }else{
-            //persoenl bilgi guncelleme islemleri
+
+    @Override
+    public void personelBilgiGuncelleEkle(ActionEvent e) {
+        if (this.getTcKimlikNo().getText().equals("")) {
+            this.getHata().setText("T.C. Kimlik Numarası alanı boş olamaz!");
+        } else {
+            try {
+                Long l = Long.valueOf(this.getTcKimlikNo().getText());
+                if (l < 10000000000L || l > 99999999998L) {
+                    this.getHata().setText("T.C. Kimlik Numarası 11 Haneli Olmalı!");
+                } else {
+                    if (l % 2 != 0) {
+                        this.getHata().setText("T.C. Kimlik Numarası tek olamaz!");
+                    } else {
+                        if (this.getAdi().getText().equals("")) {
+                            this.getHata().setText("İsim alanı boş olamaz!");
+                        } else {
+                            if (this.getSoyadi().getText().equals("")) {
+                                this.getHata().setText("Soyisim alanı boş olamaz!");
+                            } else {
+                                if (this.getMaas().getText().equals("")) {
+                                    this.getHata().setText("Maaş alanı boş olamaz!");
+                                } else {
+                                    try {
+                                        parseInt(this.getMaas().getText());
+                                        if (this.getDepartman().getText().equals("")) {
+                                            this.getHata().setText("Departman alanı boş olamaz!");
+                                        } else {
+                                            if (this.getKisiyiGuncelle_yeniKisiEkle().getText().equals("Yeni Personel Ekle")) {
+                                                if (this.getDepartman().getText().equals("Teknisyen")) {
+                                                    this.setTeknisyen(new Teknisyen());
+                                                    this.getTeknisyen().setAdi(this.getAdi().getText());
+                                                    this.getTeknisyen().setSoyadi(this.getSoyadi().getText());
+                                                    this.getTeknisyen().setTCKimlik(Long.valueOf(this.getTcKimlikNo().getText()));
+                                                    this.getTeknisyen().setMaas(parseInt(this.getMaas().getText()));
+                                                    this.getTeknisyen().setDepartman(this.getDepartman().getText());
+                                                    this.getTeknisyen().setFotoName(this.getFotoName().getText());
+                                                    this.getTeknisyen().setIseGiris(this.getIseGirisTarihi().getValue());
+                                                    this.personelOlustur((Teknisyen) this.getTeknisyen());
+                                                } else {
+                                                    this.getHata().setText("Bu sayfadan sadece Teknisyen departmanından eleman ekleyebilirsiniz!");
+                                                }
+                                            } else {
+                                                if (this.getDepartman().getText().equals("Teknisyen")) {
+                                                    this.personelGuncelle();
+                                                } else {
+                                                    this.getHata().setText("Bu sayfadan sadece Teknisyen departmanından eleman düzeleyebilirsiniz!");
+                                                }
+                                            }
+                                        }
+                                    } catch (Exception ex) {
+                                        this.getHata().setText("Maas alanına numerik ifadeler girin!");
+                                        System.out.println(ex.getMessage());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (Exception ex) {
+                this.getHata().setText("T.C. Kimlik alanına numerik ifadeler girin!");
+                System.out.println(ex.getMessage());
+            }
         }
     }
-    
-    public void teknisyen(){
-        this.getTeknisyenList().add(new Teknisyen());
-        this.getTeknisyenList().add(new Teknisyen());
-        this.getTeknisyenList().add(new Teknisyen());
-        this.getTeknisyenList().get(0).setAdi("Gürkan");
-        this.getTeknisyenList().get(0).setSoyadi("Gültekin");
-        this.getTeknisyenList().get(1).setAdi("Suzan Nur");
-        this.getTeknisyenList().get(1).setSoyadi("Bülbül");
-        this.getTeknisyenList().get(2).setAdi("Ahmet");
-        this.getTeknisyenList().get(2).setSoyadi("Uysal");
+
+    @Override
+    public void personelDetay(MouseEvent e) {
+        super.personelDetay(e);
+        // tablomuzda secilen verinin alinmiyor
+        TableView.TableViewSelectionModel<Teknisyen> selectionModel = this.getPersonelTable().getSelectionModel();
+
+        // tablodam secilecek maks item sayisinin 1 olmasi gerektigini belirliyoruz
+        selectionModel.setSelectionMode(SelectionMode.SINGLE);
+
+        /*
+         * tablodan secilen itemin bir personel nesnesi oldugu biliniyor ve personel nesnesine cast islemi gercekleserek
+         * diger metodlardan da ulasilabilrmasi adina global selectedPersonel nesnesine aktariliyor.
+         * */
+        this.setSelectedTeknisyen((Teknisyen) selectionModel.getSelectedItem());
+        this.getBolum().setText(String.valueOf(this.getSelectedTeknisyen().getBolum()));
     }
-    
-    
-    public void teknisyenOlustur() {
-        this.getTeknisyenList().add(new Teknisyen());
-        this.getTeknisyenList().get((this.getTeknisyenList().size()-1)).setAdi(this.getAdi().getText());
-        this.getTeknisyenList().get((this.getTeknisyenList().size()-1)).setSoyadi(this.getSoyadi().getText());
-        this.teknisyenListesi.getItems().add(this.getTeknisyenList().get((this.getTeknisyenList().size()-1)).getAdi() + " " + this.getTeknisyenList().get((this.getTeknisyenList().size()-1)).getSoyadi());
-        this.formTemizle();
-    }
-    
-    public void teknisyenDetay(MouseEvent e) {
-        if(teknisyenListesi.getSelectionModel().getSelectedItem().equals("Gürkan Gültekin")){
-            this.getTcKimlikNo().setText("10000000000");
-            this.getAdi().setText("Gürkan");
-            this.getSoyadi().setText("Gültekin");
-            this.getDepartman().setText("Yazılımcı");
-            this.getMaas().setText("2000");
-            this.getFotograf().setImage(new Image("/images/agent47.png"));
-        } else if(teknisyenListesi.getSelectionModel().getSelectedItem().equals("Suzan Nur Bülbül")){
-            this.getTcKimlikNo().setText("10000000002");
-            this.getAdi().setText("Suzan Nur");
-            this.getSoyadi().setText("Bülbül");
-            LocalDate ld = LocalDate.parse("2015-05-11");
-            this.getIseGirisTarihi().setValue(ld);
-            this.getDepartman().setText("Bilişim");
-            this.getMaas().setText("3000");
-            this.getFotograf().setImage(new Image("/images/usmanaga.png"));
-        } else if (teknisyenListesi.getSelectionModel().getSelectedItem().equals("Ahmet Uysal")){
-            this.getTcKimlikNo().setText("10000000004");
-            this.getAdi().setText("Ahmet");
-            this.getSoyadi().setText("Uysal");
-            this.getDepartman().setText("Müdür");
-            this.getMaas().setText("4000");
-            this.getFotograf().setImage(new Image("/images/unnamed.jpg"));
-        }else{
-            this.getTcKimlikNo().setText("Bilgi Yok!");
-            this.getAdi().setText("Bilgi Yok!");
-            this.getSoyadi().setText("Bilgi Yok!");
-            this.getDepartman().setText("Bilgi Yok!");
-            this.getMaas().setText("Bilgi Yok!");
+
+    @Override
+    public void personelGuncelle() {
+        if (this.getBolum().getText().equals("")) {
+            this.getHata().setText("Bölüm alanı boş bırakılamaz!");
+        } else {
+            if (!this.personelKontrol()) {
+                this.getHata().setText("Bu kimlik numarasıyla kayıtlı bir personel yok!");
+            } else {
+                Teknisyen teknisyen = new Teknisyen(this.getBolum().getText());
+                teknisyen.setAdi(this.getAdi().getText());
+                teknisyen.setSoyadi(this.getSoyadi().getText());
+                teknisyen.setTCKimlik(Long.valueOf(this.getTcKimlikNo().getText()));
+                teknisyen.setMaas(parseInt(this.getMaas().getText()));
+                teknisyen.setDepartman(this.getDepartman().getText());
+                teknisyen.setFotoName(this.getFotoName().getText());
+                teknisyen.setIseGiris(this.getIseGirisTarihi().getValue());
+                try {
+                    /*
+                     *  string degiskeni, dosyaya yazilacak yaziyi, name dagiskenini ise personelin fotograf isminin benzersiz
+                     *  olmasi icin random bir dosya ismi belirlememizde kullancagiz.
+                     * */
+                    String string;
+                    /*
+                     * fotograf olarak herhangi bir dosya secilmediyse mevcuttaki fotograf adininin degistirilmeden kullanilmasini
+                     * saglamak icin dosyaya bu fotograf adiyla kaydediyoruz
+                     * */
+                    boolean a = false;
+                    if (teknisyen.getFotoName().equals("")) {
+                        teknisyen.setFotoName(this.getSelectedPersonel().getFotoName());
+                        string = "!" + teknisyen.getAdi() + "@" + teknisyen.getSoyadi() + "%" + teknisyen.getTCKimlik().toString()
+                                + "&" + teknisyen.getMaas() + "?" + teknisyen.getDepartman() + "*" + teknisyen.getIseGiris().toString() + "_" +
+                                teknisyen.getFotoName() + "<" + teknisyen.getBolum() + "|";
+                    } else {
+                        teknisyen.setFotoName(UUID.randomUUID().toString());
+                        string = "!" + teknisyen.getAdi() + "@" + teknisyen.getSoyadi() + "%" + teknisyen.getTCKimlik().toString()
+                                + "&" + teknisyen.getMaas() + "?" + teknisyen.getDepartman() + "*" + teknisyen.getIseGiris().toString() + "_" +
+                                teknisyen.getFotoName() + ".jpg<" + teknisyen.getBolum() + "|";
+                        a = true;
+                    }
+                    /*
+                     * baslangicta dosyadaki satirlar okunuyor
+                     * */
+                    List<String> lines = this.getDosyaYazOku().dosyadanOku("personel");
+                    int size = lines.size();
+                    for (int i = 0; i < size; i++) {
+                        String str = lines.get(i);
+                        int strsize = str.length();
+                        for (int j = 0; j < strsize; j++) {
+                            String tckimlik = "";
+                            /*
+                             * formdaki kimlik numarasinin dosyada var olup olmadigini kontrol etmek amaciyla her satirdaki
+                             * kimlik numaralari okunuyor
+                             * */
+                            if (str.charAt(j) == '%') {
+                                j++;
+                                while (str.charAt(j) != '&') {
+                                    tckimlik += str.charAt(j++);
+                                }
+                            }
+                            /*
+                             * formdaki kimlik numarasi bu satirdaki okunan kimlik numarasi ile eslesiyorsa bu sart icindeki
+                             * islemler gerceklesecek
+                             * */
+                            if (tckimlik.equals(teknisyen.getTCKimlik().toString())) {
+                                /*
+                                 * eger aaa degiskeni true ise bu personelin kisisel fotografi var demektir ve secilen
+                                 * fotograf bizim images klasorumuze kaydedilecek.
+                                 * */
+                                if (a) {
+                                    /*
+                                     * a degiskeni, mevcut fotograf dosyada varsa eger onu silip yenisini yuklemek amaciyla
+                                     * kontrol etmemize yariyor
+                                     * */
+                                    boolean aa = this.getDosyaYazOku().dosyaAra(this.getSelectedPersonel().getFotoName());
+                                    // dosya adi unnamed degilse silme islemi gerceklesecek.
+                                    if (aa && !this.getSelectedPersonel().getFotoName().equals("unnamed.jpg")) {
+                                        this.getDosyaYazOku().dosyaSil(this.getSelectedPersonel().getFotoName());
+                                    }
+                                    this.getDosyaYazOku().dosyaKopyala(this.getFotoUrl(), teknisyen.getFotoName());
+                                }
+                                //guncellenecek satir siliniyoe
+                                lines.remove(i);
+                                //yeni bilgi listeye ekleniyor
+                                lines.add(string);
+                                //yeni bilgilerle dosyaya yazma islemi gerceklestiriliyor.
+                                this.getDosyaYazOku().dosyaGuncelle("personel", lines);
+                                //daha fazla islem yapilip zaman harcanmamasi adina i size'a esitlenerek diger satirlarin kontrol edilmesi engelleniyor
+                                i = size;
+                            }
+                        }
+                    }
+
+
+                    lines = this.getDosyaYazOku().dosyadanOku("teknisyen");
+                    size = lines.size();
+                    for (int i = 0; i < size; i++) {
+                        String str = lines.get(i);
+                        int strsize = str.length();
+                        for (int j = 0; j < strsize; j++) {
+                            String tckimlik = "";
+                            /*
+                             * formdaki kimlik numarasinin dosyada var olup olmadigini kontrol etmek amaciyla her satirdaki
+                             * kimlik numaralari okunuyor
+                             * */
+                            if (str.charAt(j) == '%') {
+                                j++;
+                                while (str.charAt(j) != '&') {
+                                    tckimlik += str.charAt(j++);
+                                }
+                            }
+                            /*
+                             * formdaki kimlik numarasi bu satirdaki okunan kimlik numarasi ile eslesiyorsa bu sart icindeki
+                             * islemler gerceklesecek
+                             * */
+                            if (tckimlik.equals(teknisyen.getTCKimlik().toString())) {
+                                //guncellenecek satir siliniyoe
+                                lines.remove(i);
+                                //yeni bilgi listeye ekleniyor
+                                lines.add(string);
+                                //yeni bilgilerle dosyaya yazma islemi gerceklestiriliyor.
+                                this.getDosyaYazOku().dosyaGuncelle("teknisyen", lines);
+                                //daha fazla islem yapilip zaman harcanmamasi adina i size'a esitlenerek diger satirlarin kontrol edilmesi engelleniyor
+                                i = size;
+                            }
+                        }
+                    }
+                    this.personelTabosuGuncelle();
+                    this.formTemizle();
+                    this.getHata().setText("");
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
+                }
+            }
         }
-        this.formuTemizle.setVisible(true);
-        this.istenCikar.setVisible(true);
-        this.getKisiyiGuncelle_yeniKisiEkle().setText("Personel Güncelle");
-
     }
-    
-    public void formTemizle(){
-        tcKimlikNo.setText("");
-        adi.setText("");
-        soyadi.setText("");
-        maas.setText("");
-        departman.setText("");
-        iseGirisTarihi.setValue(LocalDate.now());
-        this.fotograf.setImage(new Image("/images/unnamed.jpg"));
-        this.getKisiyiGuncelle_yeniKisiEkle().setText("Yeni Personel Ekle");
-        this.formuTemizle.setVisible(false);
-        this.istenCikar.setVisible(false);
-        this.teknisyenListesi.getSelectionModel().clearSelection();
+
+    @Override
+    public void personelOlustur(Teknisyen teknisyen) {
+        boolean check = false;
+        if (this.getBolum().getText().equals("")) {
+            this.getHata().setText("Bölüm alanı boş bırakılamaz!");
+        } else {
+            if (this.personelKontrol()) {
+                this.getHata().setText("Bu kimlik numarasıyla kayıtlı bir personel zaten var!");
+            } else {
+                String string;
+                teknisyen.setBolum(this.getBolum().getText());
+                if (teknisyen.getFotoName().equals("")) {
+                    teknisyen.setFotoName("unnamed.jpg");
+                    string = "!" + teknisyen.getAdi() + "@" + teknisyen.getSoyadi() + "%" + teknisyen.getTCKimlik().toString()
+                            + "&" + teknisyen.getMaas() + "?" + teknisyen.getDepartman() + "*" + teknisyen.getIseGiris().toString()
+                            + "_" + teknisyen.getFotoName() + "<" + teknisyen.getBolum() + "|";
+                } else {
+                    teknisyen.setFotoName(UUID.randomUUID().toString());
+                    string = "!" + teknisyen.getAdi() + "@" + teknisyen.getSoyadi() + "%" + teknisyen.getTCKimlik().toString()
+                            + "&" + teknisyen.getMaas() + "?" + teknisyen.getDepartman() + "*" + teknisyen.getIseGiris().toString()
+                            + "_" + "<" + teknisyen.getBolum() + "|";
+
+                    this.getDosyaYazOku().dosyaKopyala(this.getFotoUrl(), teknisyen.getFotoName());
+                }
+
+                this.getDosyaYazOku().setYazilacakDeger(string);
+                try {
+                    this.getDosyaYazOku().dosyayaYaz("personel");
+                    this.getDosyaYazOku().dosyayaYaz("teknisyen");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                this.personelTabosuGuncelle();
+                this.formTemizle();
+                this.getHata().setText("");
+
+            }
+        }
     }
-    
-    ////
-	
-	
-	@FXML
-	private ListView departmans;
 
-	public ListView getDepartmans() {
-		return departmans;
-	}
+    @Override
+    public void formTemizle() {
+        super.formTemizle();
+        this.getBolum().setText("");
+    }
 
-	public void setDepartmans(ListView departman) {
-		this.departmans = departman;
-	}
+    public TextField getBolum() {
+        return bolum;
+    }
 
-	public Teknisyen getTeknisyen() {
-		return teknisyen;
-	}
+    public void setBolum(TextField bolum) {
+        this.bolum = bolum;
+    }
 
-	public void setTeknisyen(Teknisyen teknisyen) {
-		this.teknisyen = teknisyen;
-	}
+    public TableView getPersonelTable() {
+        return personelTable;
+    }
 
-	public List<Teknisyen> getTeknisyenList() {
-		 if(this.teknisyenList == null)
-	            this.teknisyenList = new ArrayList<>();
-		return teknisyenList;
-	}
+    public void setPersonelTable(TableView personelTable) {
+        this.personelTable = personelTable;
+    }
 
-	public void setTeknisyenList(List<Teknisyen> teknisyenList) {
-		this.teknisyenList = teknisyenList;
-	}
+    public TableColumn<Teknisyen, Long> getTableTC() {
+        return tableTC;
+    }
 
-	public DosyaYazma getDosyaYazOku() {
-		return dosyaYazOku;
-	}
+    public void setTableTC(TableColumn<Teknisyen, Long> tableTC) {
+        this.tableTC = tableTC;
+    }
 
-	public void setDosyaYazOku(DosyaYazma dosyaYazOku) {
-		this.dosyaYazOku = dosyaYazOku;
-	}
+    public TableColumn<Teknisyen, String> getTableAdi() {
+        return tableAdi;
+    }
 
-	public TextField getTcKimlikNo() {
-		return tcKimlikNo;
-	}
+    public void setTableAdi(TableColumn<Teknisyen, String> tableAdi) {
+        this.tableAdi = tableAdi;
+    }
 
-	public void setTcKimlikNo(TextField tcKimlikNo) {
-		this.tcKimlikNo = tcKimlikNo;
-	}
+    public TableColumn<Teknisyen, String> getTableSoyadi() {
+        return tableSoyadi;
+    }
 
-	public TextField getAdi() {
-		return adi;
-	}
+    public void setTableSoyadi(TableColumn<Teknisyen, String> tableSoyadi) {
+        this.tableSoyadi = tableSoyadi;
+    }
 
-	public void setAdi(TextField adi) {
-		this.adi = adi;
-	}
+    public TableColumn<Teknisyen, String> getTableDepartmani() {
+        return tableDepartmani;
+    }
 
-	public TextField getSoyadi() {
-		return soyadi;
-	}
+    public void setTableDepartmani(TableColumn<Teknisyen, String> tableDepartmani) {
+        this.tableDepartmani = tableDepartmani;
+    }
 
-	public void setSoyadi(TextField soyadi) {
-		this.soyadi = soyadi;
-	}
+    public TableColumn<Teknisyen, Date> getTableIsegiris() {
+        return tableIsegiris;
+    }
 
-	public DatePicker getIseGirisTarihi() {
-		return iseGirisTarihi;
-	}
+    public void setTableIsegiris(TableColumn<Teknisyen, Date> tableIsegiris) {
+        this.tableIsegiris = tableIsegiris;
+    }
 
-	public void setIseGirisTarihi(DatePicker iseGirisTarihi) {
-		this.iseGirisTarihi = iseGirisTarihi;
-	}
+    public ObservableList<Teknisyen> getList() {
+        return list;
+    }
 
-	public TextField getMaas() {
-		return maas;
-	}
+    public void setList(ObservableList<Teknisyen> list) {
+        this.list = list;
+    }
 
-	public void setMaas(TextField maas) {
-		this.maas = maas;
-	}
+    public Teknisyen getSelectedTeknisyen() {
+        return selectedTeknisyen;
+    }
 
-	public TextField getDepartman() {
-		return departman;
-	}
-
-	public void setDepartman(TextField departman) {
-		this.departman = departman;
-	}
-
-	public ListView<String> getIseGirisSaatleri() {
-		return iseGirisSaatleri;
-	}
-
-	public void setIseGirisSaatleri(ListView<String> iseGirisSaatleri) {
-		this.iseGirisSaatleri = iseGirisSaatleri;
-	}
-
-	public ListView<String> getIstenCikisSaatleri() {
-		return istenCikisSaatleri;
-	}
-
-	public void setIstenCikisSaatleri(ListView<String> istenCikisSaatleri) {
-		this.istenCikisSaatleri = istenCikisSaatleri;
-	}
-
-	public ListView<String> getTeknisyenListesi() {
-		return teknisyenListesi;
-	}
-
-	public void setTeknisyenListesi(ListView<String> teknisyenListesi) {
-		this.teknisyenListesi = teknisyenListesi;
-	}
-
-	public Button getKisiyiGuncelle_yeniKisiEkle() {
-		return kisiyiGuncelle_yeniKisiEkle;
-	}
-
-	public void setKisiyiGuncelle_yeniKisiEkle(Button kisiyiGuncelle_yeniKisiEkle) {
-		this.kisiyiGuncelle_yeniKisiEkle = kisiyiGuncelle_yeniKisiEkle;
-	}
-
-	public Button getIstenCikar() {
-		return istenCikar;
-	}
-
-	public void setIstenCikar(Button istenCikar) {
-		this.istenCikar = istenCikar;
-	}
-
-	public Button getFormuTemizle() {
-		return formuTemizle;
-	}
-
-	public void setFormuTemizle(Button formuTemizle) {
-		this.formuTemizle = formuTemizle;
-	}
-
-	public Button getGeri() {
-		return geri;
-	}
-
-	public void setGeri(Button geri) {
-		this.geri = geri;
-	}
-
-	public ImageView getFotograf() {
-		return fotograf;
-	}
-
-	public void setFotograf(ImageView fotograf) {
-		this.fotograf = fotograf;
-	}
-
-	public AnchorPane getAnchorPane() {
-		return anchorPane;
-	}
-
-	public void setAnchorPane(AnchorPane anchorPane) {
-		this.anchorPane = anchorPane;
-	}
-
+    public void setSelectedTeknisyen(Teknisyen selectedTeknisyen) {
+        this.selectedTeknisyen = selectedTeknisyen;
+    }
 }

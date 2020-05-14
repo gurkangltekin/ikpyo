@@ -5,8 +5,13 @@ public class Muhasebeci extends Personel {
     private int odeyecegiMiktar;
     private int geriGetirilenTutar;
 
-    public void zimmetGuncelle(){
+    public Muhasebeci() {
+    }
 
+    public Muhasebeci(int zimmetEdilenMiktar, int odeyecegiMiktar, int geriGetirilenTutar) {
+        this.ZimmetEdilenMiktar = zimmetEdilenMiktar;
+        this.odeyecegiMiktar = odeyecegiMiktar;
+        this.geriGetirilenTutar = geriGetirilenTutar;
     }
 
     public int getZimmetEdilenMiktar() {

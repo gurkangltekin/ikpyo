@@ -1,16 +1,20 @@
 package sample;
 
-public class Teknisyen extends TeknikEleman {
-    private String departman;
+public class Teknisyen extends Personel {
+    private String bolum;
 
-
-
-    public String getDepartman() {
-        return departman;
+    public Teknisyen() {
     }
 
+    public Teknisyen(String bolum) {
+        this.bolum = bolum;
+    }
 
-    public void setDepartman(String departman) {
-        this.departman = departman;
+    public String getBolum() {
+        return bolum;
+    }
+
+    public void setBolum(String bolum) {
+        this.bolum = bolum;
     }
 }

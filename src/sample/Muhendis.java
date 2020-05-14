@@ -1,9 +1,14 @@
 package sample;
 
-public class Muhendis extends TeknikEleman {
+
+public class Muhendis extends Personel {
     private String uzmanlik;
 
     public Muhendis() {
+    }
+
+    public Muhendis(String uzmanlik) {
+        this.uzmanlik = uzmanlik;
     }
 
     public String getUzmanlik() {

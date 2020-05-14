@@ -14,60 +14,49 @@ public class Controller {
     private Main main = new Main();
 
 
-    public void girisCikis(ActionEvent e) throws IOException {
+    public void girisCikis(ActionEvent e) throws Exception {
+        this.getMain().goToPage("girisCikisTakip.fxml");
         this.getMain().setTitle("Giriş Çıkış Takip");
-        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("girisCikisTakip.fxml"));
-        anchorPane.getChildren().setAll(pane);
     }
-    public void personelListesi(ActionEvent e) throws IOException {
+    public void personelListesi(ActionEvent e) throws Exception {
+        this.getMain().goToPage("personel.fxml");
         this.getMain().setTitle("Personel");
-        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("personel.fxml"));
-        anchorPane.getChildren().setAll(pane);
     }
-    public void isciler(ActionEvent e) throws IOException {
+    public void isciler(ActionEvent e) throws Exception {
+        this.getMain().goToPage("isci.fxml");
         this.getMain().setTitle("İşçi");
-        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("isci.fxml"));
-        anchorPane.getChildren().setAll(pane);
     }
-    public void pazarlamacilar(ActionEvent e) throws IOException {
+    public void pazarlamacilar(ActionEvent e) throws Exception {
+        this.getMain().goToPage("pazarlamaci.fxml");
         this.getMain().setTitle("Pazarlamacı");
-        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("pazarlamaci.fxml"));
-        anchorPane.getChildren().setAll(pane);
     }
-    public void itElemani(ActionEvent e) throws IOException {
+    public void itElemani(ActionEvent e) throws Exception {
+        this.getMain().goToPage("ITElemani.fxml");
         this.getMain().setTitle("IT Elemanı");
-        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("ITElemani.fxml"));
-        anchorPane.getChildren().setAll(pane);
     }
-    public void muhasebeci(ActionEvent e) throws IOException {
+    public void muhasebeci(ActionEvent e) throws Exception {
+        this.getMain().goToPage("Muhasebeci.fxml");
         this.getMain().setTitle("Muhasebeci");
-        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("Muhasebeci.fxml"));
-        anchorPane.getChildren().setAll(pane);
     }
-    public void muhendis(ActionEvent e) throws IOException {
+    public void muhendis(ActionEvent e) throws Exception {
+        this.getMain().goToPage("Muhendis.fxml");
         this.getMain().setTitle("Mühendis");
-        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("Muhendis.fxml"));
-        anchorPane.getChildren().setAll(pane);
     }
-    public void satislar(ActionEvent e) throws IOException {
+    public void satislar(ActionEvent e) throws Exception {
+        this.getMain().goToPage("satislar.fxml");
         this.getMain().setTitle("Satışlar");
-        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("satislar.fxml"));
-        anchorPane.getChildren().setAll(pane);
     }
-    public void uretim(ActionEvent e) throws IOException {
+    public void uretim(ActionEvent e) throws Exception {
+        this.getMain().goToPage("uretilenler.fxml");
         this.getMain().setTitle("Üretilenler");
-        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("uretilenler.fxml"));
-        anchorPane.getChildren().setAll(pane);
     }
-    public void teknisyen(ActionEvent e) throws IOException {
+    public void teknisyen(ActionEvent e) throws Exception {
+        this.getMain().goToPage("teknisyen.fxml");
         this.getMain().setTitle("Teknisyen");
-        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("teknisyen.fxml"));
-        anchorPane.getChildren().setAll(pane);
     }
-    public void teknikEleman(ActionEvent e) throws IOException {
+    public void teknikEleman(ActionEvent e) throws Exception {
+        this.getMain().goToPage("TeknikEleman.fxml");
         this.getMain().setTitle("Teknik Eleman");
-        AnchorPane pane = (AnchorPane) FXMLLoader.load(getClass().getResource("TeknikEleman.fxml"));
-        anchorPane.getChildren().setAll(pane);
     }
 
     public Main getMain() {

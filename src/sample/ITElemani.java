@@ -2,14 +2,20 @@ package sample;
 
 public class ITElemani  extends Personel{
 
-    private String uzmalik;
+    private String uzmanlik;
 
-
-    public String getUzmalik() {
-        return uzmalik;
+    public ITElemani() {
     }
 
-    public void setUzmalik(String uzmalik) {
-        this.uzmalik = uzmalik;
+    public ITElemani(String uzmalik) {
+        this.uzmanlik = uzmalik;
+    }
+
+    public String getUzmanlik() {
+        return uzmanlik;
+    }
+
+    public void setUzmanlik(String uzmanlik) {
+        this.uzmanlik = uzmanlik;
     }
 }

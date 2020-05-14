@@ -1,7 +1,16 @@
-!Ahmet@Uysal%11&10000?Yazılım*2020-05-27_unnamed.jpg<
-!Suzan Nur@Bülbül%487124&100000?Yazılım*1998-11-29_e577bdd2-fc55-40f5-b2bf-9ff2e316f597.jpg<
-!fsdf@sdfsd%487125&7555?İşçi*2020-05-09_unnamed.jpg<150|850>
-!asdsa@asda%234&324?İşçi*2020-05-09_unnamed.jpg<
-!sdfsfs@sdfsd%66666666&4567654?İşçi*2020-05-09_76a2dbb7-805c-4b52-a526-ebd29e4bd12f.jpg<
-!fsdfsd@sfsd%123655&666?İşçi*2020-05-09_e7047b35-13d9-4c56-912a-a288052b2057.jpg<
-!Gürkan@Gültekin%4871249&10000?Yazılım*1998-01-20_b9b7aebe-3d8c-46ea-abc9-58bb02da9726.jpg<
+!sdfs@sdf%23423423424&234?Deneme*2020-05-12_unnamed.jpg<
+!fsfs@sfs%24242424242&243?Muhasebeci*2020-05-12_unnamed.jpg<0|0(0>
+!fdas@sdf%42342334444&234?Muhasebeci*2020-05-12_unnamed.jpg<0|0(0>
+!Ahmet@Uysal%99999666666&234?IT Elemanı*2020-05-12_unnamed.jpg<|
+!asdas@asd%23423222222&213?dsa*2020-05-12_unnamed.jpg<
+!Suzan@Bülbül%88888888888&54?IT Elemanı*2020-05-12_unnamed.jpg<
+!Gürkan@sdf%23444444444&243?Muhasebeci*2020-05-14_unnamed.jpg<1231|6(234>
+!sdfsdf@sdfsd%66666666666&324?İşçi*2020-05-14_6adac4e5-3f5a-48e7-ad9d-2b63bd620576.jpg<500|100>
+!wasda@asda%23423484444&243?İşçi*2020-05-14_unnamed.jpg<0|100>
+!sdffds@sdfs%96969696966&234?IT Elemanı*2020-05-12_1249330e-6950-4e37-bd1e-8deb716638ce.jpg<ssdf|
+!sdfsdaaaa@sdfs%66666668888&32?IT Elemanı*2020-05-12_1aebd947-7168-4f23-9f8c-d0d78a87bd81.jpg<sdf|
+!adsa@asdaaaaaaaaaaa%23422424242&23?Mühendis*2020-05-14_a97e7477-5fbb-41e8-b074-2dae45c3dcde.jpg<35453|
+!sdada@adas%86868686868&234?Pazarlamacı*2020-05-01_a7e44418-5d46-4351-886d-819b9d1432eb.jpg<132|1231>
+!ads@342das%42342322232&24?Pazarlamacı*2020-05-14_unnamed.jpg<234|234>
+!dasda@asdas%44442223232&23?Teknik Eleman*2020-05-14_unnamed.jpg<35|sfs>
+!Deneme@sdfsd%44444332226&234?Teknisyen*2020-05-14_393650b7-62b0-402c-9f53-a05868133498.jpg<sdfsd|
