@@ -14,7 +14,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Main.primaryStage = primaryStage;
-        root = FXMLLoader.load(getClass().getResource("anasayfa.fxml"));
+        root = FXMLLoader.load(getClass().getResource("arayuzler/anasayfa.fxml"));
         primaryStage.setTitle("Anasayfa");
         primaryStage.setScene(new Scene(root, 1024, 768));
         primaryStage.show();
