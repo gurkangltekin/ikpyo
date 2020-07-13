@@ -49,10 +49,6 @@ public class GirisCikisTakipController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.personelTabosuGuncelle();
-        /*
-         * form bos oldugu zaman form temizle ve isten cikar butonları gereksiz olacagindan bu butonlari default olarak
-         * gorunmez yapiyoruz...
-         * */
     }
 
     public void geri(ActionEvent e) throws Exception {

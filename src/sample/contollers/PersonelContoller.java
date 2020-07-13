@@ -92,8 +92,8 @@ public class PersonelContoller implements Initializable {
     private String name;
 
     // polymorphism
-    private Personel isci;
-    private Personel ITElemani;
+    private Personel isci = new Isci();
+    private Personel ITElemani = new ITElemani();
     private Personel muhasebeci;
     private Personel muhendis;
     private Personel pazarlamaci;

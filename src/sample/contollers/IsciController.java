@@ -254,6 +254,8 @@ public class IsciController extends PersonelContoller {
         // tablodam secilecek maks item sayisinin 1 olmasi gerektigini belirliyoruz
         selectionModel.setSelectionMode(SelectionMode.SINGLE);
 
+        System.out.println(selectionModel.getFocusedIndex());
+
         /*
          * tablodan secilen itemin bir personel nesnesi oldugu biliniyor ve personel nesnesine cast islemi gercekleserek
          * diger metodlardan da ulasilabilrmasi adina global selectedPersonel nesnesine aktariliyor.
